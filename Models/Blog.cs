@@ -35,7 +35,7 @@ namespace BlogProject.Models
 
         //Navigation Properties
         public virtual IdentityUser Author { get; set; }//parent of blog
-        public virtual ICollection<Post> Posts { get;} = new HashSet<Post>();
+        public virtual ICollection<Post> Posts { get; set; } = new HashSet<Post>(); //childs
 
     }
 }

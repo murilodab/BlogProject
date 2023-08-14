@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BlogProject.Models
@@ -36,6 +37,13 @@ namespace BlogProject.Models
 
         [NotMapped] //Not to be used by the Database
         public IFormFile Image { get; set; }
+
+        //Navigation Properties
+        public virtual Blog Blog { get; set; } //parent
+        public virtual IdentityUser Author { get;set; } //parent
+
+        public virtual ICollection<Tag> Tags { get; set; } = new HashSet<Tag>(); //childs
+
 
 
     }
