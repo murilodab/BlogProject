@@ -43,6 +43,8 @@ namespace BlogProject.Models
         public virtual IdentityUser Author { get;set; } //parent
 
         public virtual ICollection<Tag> Tags { get; set; } = new HashSet<Tag>(); //childs
+        
+        public virtual ICollection<Comment> Comments { get; set; } = new HashSet<Comment>();
 
 
 
