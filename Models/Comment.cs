@@ -25,9 +25,7 @@ namespace BlogProject.Models
         [Display(Name = "Moderated Comment")]
         public string ModeratedBody { get; set; }
 
-        public ModerationType ModerationType { get; set; }
-
-
+        public ModerationType ModerationType { get; set; } //Enum
 
         //Navigation properties (Relationships)
         public virtual Post Post { get; set; }
