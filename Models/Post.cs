@@ -12,7 +12,7 @@ namespace BlogProject.Models
         [Display(Name = "Blog Name")]
         public int BlogId { get; set; }
 
-        public string AuthorId { get; set; }
+        public string BlogUserId { get; set; }
 
         [Required]
         [StringLength(75, ErrorMessage = "The {0} muat be at least {2} and no more than {1} characters long", MinimumLength = 2)]
@@ -41,7 +41,7 @@ namespace BlogProject.Models
 
         //Navigation Properties
         public virtual Blog Blog { get; set; } //parent
-        public virtual BlogUser Author { get;set; } //parent
+        public virtual BlogUser BlogUser { get;set; } //parent
 
         public virtual ICollection<Tag> Tags { get; set; } = new HashSet<Tag>(); //childs
         
