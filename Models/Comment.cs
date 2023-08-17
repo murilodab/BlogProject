@@ -7,7 +7,7 @@ namespace BlogProject.Models
     public class Comment
     {
         public int Id { get; set; }
-        public string PostId { get; set; }
+        public int PostId { get; set; }
         public string BlogUserId { get; set; }
         public string ModeratorId { get; set; }
 
