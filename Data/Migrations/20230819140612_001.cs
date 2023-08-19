@@ -169,13 +169,13 @@ namespace BlogProject.Data.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    BlogUserId = table.Column<string>(type: "text", nullable: false),
+                    BlogUserId = table.Column<string>(type: "text", nullable: true),
                     Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Description = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
-                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     Updated = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    ImageData = table.Column<byte[]>(type: "bytea", nullable: false),
-                    ContentType = table.Column<string>(type: "text", nullable: false)
+                    ImageData = table.Column<byte[]>(type: "bytea", nullable: true),
+                    ContentType = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -184,8 +184,7 @@ namespace BlogProject.Data.Migrations
                         name: "FK_Blogs_AspNetUsers_BlogUserId",
                         column: x => x.BlogUserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
