@@ -17,6 +17,9 @@ builder.Services.AddRazorPages()
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseNpgsql(connectionString));
 
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 
