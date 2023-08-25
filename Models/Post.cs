@@ -25,7 +25,7 @@ namespace BlogProject.Models
         public string Content { get; set; }
 
         [DataType(DataType.Date)]
-        [Display(Name = "Updated Date")]
+        [Display(Name = "Created Date")]
         public DateTime Created { get; set; }
         public DateTime? Updated { get; set; }
 
