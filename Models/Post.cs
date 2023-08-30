@@ -12,7 +12,7 @@ namespace BlogProject.Models
         [Display(Name = "Blog Name")]
         public int BlogId { get; set; }
 
-        public string BlogUserId { get; set; }
+        public string? BlogUserId { get; set; }
 
         [Required]
         [StringLength(75, ErrorMessage = "The {0} muat be at least {2} and no more than {1} characters long", MinimumLength = 2)]
@@ -31,17 +31,17 @@ namespace BlogProject.Models
 
         public ReadyStatus ReadyStatus { get; set; }
 
-        public string Slug { get; set; }
+        public string? Slug { get; set; }
 
-        public byte[] ImageData { get; set; }
-        public string ContentType { get; set; }
+        public byte[]? ImageData { get; set; }
+        public string? ContentType { get; set; }
 
         [NotMapped] //Not to be used by the Database
-        public IFormFile Image { get; set; }
+        public IFormFile? Image { get; set; }
 
         //Navigation Properties
-        public virtual Blog Blog { get; set; } //parent
-        public virtual BlogUser BlogUser { get;set; } //parent
+        public virtual Blog? Blog { get; set; } //parent
+        public virtual BlogUser? BlogUser { get;set; } //parent
 
         public virtual ICollection<Tag> Tags { get; set; } = new HashSet<Tag>(); //childs
         
