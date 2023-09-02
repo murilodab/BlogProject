@@ -32,6 +32,11 @@ namespace BlogProject.Controllers
             var moderatedComments = await _context.Comments.Where(c => c.Moderated != null).ToListAsync();
             return View("Index", moderatedComments);
         }
+        public async Task<IActionResult> Index()
+        {
+            var allComments = await _context.Comments.ToListAsync();
+            return View(allComments);
+        }
 
         //public async Task<IActionResult> DeletedIndex()
         //{
@@ -42,28 +47,7 @@ namespace BlogProject.Controllers
         //{
         //var applicationDbContext = _context.Comments.Include(c => c.BlogUser).Include(c => c.Moderator).Include(c => c.Post);
         //return View(await applicationDbContext.ToListAsync());
-        //}
-
-        // GET: Comments/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null || _context.Comments == null)
-            {
-                return NotFound();
-            }
-
-            var comment = await _context.Comments
-                .Include(c => c.BlogUser)
-                .Include(c => c.Moderator)
-                .Include(c => c.Post)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (comment == null)
-            {
-                return NotFound();
-            }
-
-            return View(comment);
-        }
+        //}    
 
         // GET: Comments/Create
         //public IActionResult Create()
