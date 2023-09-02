@@ -20,17 +20,29 @@ namespace BlogProject.Controllers
         }
 
         // GET: Comments
-        //public async Task<IActionResult> OriginalIndex()
-        //{
-          //  var applicationDbContext = _context.Comments.Include(c => c.BlogUser).Include(c => c.Moderator).Include(c => c.Post);
-          //  return View(await applicationDbContext.ToListAsync());
-   // }
 
-    public async Task<IActionResult> Index()
+        public async Task<IActionResult> OriginalIndex()
         {
-            var applicationDbContext = _context.Comments.Include(c => c.BlogUser).Include(c => c.Moderator).Include(c => c.Post);
-            return View(await applicationDbContext.ToListAsync());
+            var originalComments = await _context.Comments.ToListAsync();
+            return View("Index", originalComments);
         }
+
+        public async Task<IActionResult> ModeratedIndex()
+        {
+            var moderatedComments = await _context.Comments.Where(c => c.Moderated != null).ToListAsync();
+            return View("Index", moderatedComments);
+        }
+
+        //public async Task<IActionResult> DeletedIndex()
+        //{
+        //Use soft delete tool
+        //}
+
+        //public async Task<IActionResult> Index()
+        //{
+        //var applicationDbContext = _context.Comments.Include(c => c.BlogUser).Include(c => c.Moderator).Include(c => c.Post);
+        //return View(await applicationDbContext.ToListAsync());
+        //}
 
         // GET: Comments/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -173,14 +185,14 @@ namespace BlogProject.Controllers
             {
                 _context.Comments.Remove(comment);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool CommentExists(int id)
         {
-          return (_context.Comments?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Comments?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
