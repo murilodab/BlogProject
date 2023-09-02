@@ -20,7 +20,13 @@ namespace BlogProject.Controllers
         }
 
         // GET: Comments
-        public async Task<IActionResult> Index()
+        //public async Task<IActionResult> OriginalIndex()
+        //{
+          //  var applicationDbContext = _context.Comments.Include(c => c.BlogUser).Include(c => c.Moderator).Include(c => c.Post);
+          //  return View(await applicationDbContext.ToListAsync());
+   // }
+
+    public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Comments.Include(c => c.BlogUser).Include(c => c.Moderator).Include(c => c.Post);
             return View(await applicationDbContext.ToListAsync());
