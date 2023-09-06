@@ -3,6 +3,7 @@ using System;
 using BlogProject.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BlogProject.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230906123512_003_BlogUserImageDataisNowNullable")]
+    partial class _003_BlogUserImageDataisNowNullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -75,6 +78,7 @@ namespace BlogProject.Data.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("ContentType")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Email")
@@ -90,6 +94,7 @@ namespace BlogProject.Data.Migrations
                         .HasColumnType("character varying(50)");
 
                     b.Property<string>("GithubUrl")
+                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
@@ -102,6 +107,7 @@ namespace BlogProject.Data.Migrations
                         .HasColumnType("character varying(50)");
 
                     b.Property<string>("LinkedinUrl")
+                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 

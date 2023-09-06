@@ -2,6 +2,7 @@
 using BlogProject.Enums;
 using BlogProject.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace BlogProject.Services
 {
@@ -24,6 +25,8 @@ namespace BlogProject.Services
 
         public async Task ManageDataAsync() //Wrapper
         {
+            //Create the DB from the Migrations
+            await _dbContext.Database.MigrateAsync();
             //Seed a few Roles into the system
             await SeedRolesAsync();
 
@@ -92,9 +95,9 @@ namespace BlogProject.Services
 
             //Step 3:
             await _userManager.AddToRoleAsync(modUser, BlogRole.Moderator.ToString());
-        
-        
-        
+
+
+
         }
 
 

@@ -1,5 +1,6 @@
 using BlogProject.Data;
 using BlogProject.Models;
+using BlogProject.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -35,7 +36,19 @@ builder.Services.AddDefaultIdentity<BlogUser>(options => options.SignIn.RequireC
 
 builder.Services.AddControllersWithViews();
 
+//Register my custom DataService class
+builder.Services.AddScoped<DataService>();
+                
+
 var app = builder.Build();
+
+using (var serviceScope = app.Services.CreateScope())
+{
+    var services = serviceScope.ServiceProvider;
+    var dataService = services.GetRequiredService<DataService>();
+
+    await dataService.ManageDataAsync();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
