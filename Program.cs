@@ -44,8 +44,12 @@ builder.Services.AddScoped<DataService>();
 builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
 builder.Services.AddScoped<IBlogEmailSender, EmailService>();
 
+//Register our Image Service
+builder.Services.AddScoped<IImageService, BasicImageService>();
+
 var app = builder.Build();
 
+//Using the Custom DataService
 using (var serviceScope = app.Services.CreateScope())
 {
     var services = serviceScope.ServiceProvider;
@@ -53,6 +57,8 @@ using (var serviceScope = app.Services.CreateScope())
 
     await dataService.ManageDataAsync();
 }
+
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
