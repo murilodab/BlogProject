@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using BlogProject.Data;
 using BlogProject.Models;
 using BlogProject.Services;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BlogProject.Controllers
 {
@@ -15,11 +17,13 @@ namespace BlogProject.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IImageService _imageService;
+        private readonly UserManager<BlogUser> _userManager;
 
-        public BlogsController(ApplicationDbContext context, IImageService imageService)
+        public BlogsController(ApplicationDbContext context, IImageService imageService, UserManager<BlogUser> userManager)
         {
             _context = context;
             _imageService = imageService;
+            _userManager = userManager;
         }
 
         // GET: Blogs
@@ -49,6 +53,7 @@ namespace BlogProject.Controllers
         }
 
         // GET: Blogs/Create
+        [Authorize]
         public IActionResult Create()
         {
             return View();
@@ -64,8 +69,13 @@ namespace BlogProject.Controllers
             if (ModelState.IsValid)
             {
                 blog.Created = DateTime.Now;
+                blog.BlogUserId = _userManager.GetUserId(User);
+                blog.ImageData = await _imageService.EncodeImageAsync(blog.Image);
+                blog.ContentType = _imageService.ContentType(blog.Image);
+
                 _context.Add(blog);
                 await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
             ViewData["BlogUserId"] = new SelectList(_context.Users, "Id", "Id", blog.BlogUserId);
