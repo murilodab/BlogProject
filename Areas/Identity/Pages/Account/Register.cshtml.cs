@@ -74,12 +74,12 @@ namespace BlogProject.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]
-            [StringLength(50, ErrorMessage = "The {0} must be at least {2] and at max {1} characters long.", MinimumLength = 2)]
+            [StringLength(50, ErrorMessage = "The {0} must be at least {2} and no more than {1} characters long", MinimumLength = 2)]
             [Display(Name = "First Name")]
             public string FirstName { get; set; }
 
             [Required]
-            [StringLength(50, ErrorMessage = "The {0} must be at least {2] and at max {1} characters long.", MinimumLength = 2)]
+            [StringLength(50, ErrorMessage = "The {0} must be at least {2} and no more than {1} characters long", MinimumLength = 2)]
             [Display(Name = "Last Name")]
             public string LastName { get; set; }
             /// <summary>
@@ -127,7 +127,9 @@ namespace BlogProject.Areas.Identity.Pages.Account
                 var user = new BlogUser
                 {
                     FirstName = Input.FirstName,
-                    LastName = Input.LastName
+                    LastName = Input.LastName,
+                   // UserName = Input.Email,
+                   // Email = Input.Email
                 };
 
                 
