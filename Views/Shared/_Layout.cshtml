@@ -67,7 +67,7 @@
     <link href="/css/styles.css" rel="stylesheet" />
     <!-- JQuery -->
     <script type="text/javascript" src="//code.jquery.com/jquery-3.6.0.min.js"></script>
-    
+
     <!-- include summernote css/js -->
     <link href="~/css/summernote-lite.css" rel="stylesheet" />
     <script src="~/js/summernote-lite.js"></script>
@@ -83,10 +83,17 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ms-auto py-4 py-lg-0">
-                    <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" asp-controller="Home" asp-action="About">About</a></li>
-                    <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" asp-controller="Home" asp-action="Contact">Contact</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link px-lg-3 py-3 py-lg-4" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-lg-3 py-3 py-lg-4" asp-controller="Home" asp-action="About">About</a>
+                        </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-lg-3 py-3 py-lg-4" asp-controller="Home" asp-action="Contact">Contact</a>
+                        </li>
                 </ul>
+                <partial name="_LoginPartial" />
             </div>
         </div>
     </nav>
