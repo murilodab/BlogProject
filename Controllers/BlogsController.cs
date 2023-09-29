@@ -103,7 +103,7 @@ namespace BlogProject.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description")] Blog blog, IFormFile newImage)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description")] Blog blog, IFormFile? newImage)
         {
             if (id != blog.Id)
             {
@@ -114,7 +114,7 @@ namespace BlogProject.Controllers
             {
                 try
                 {
-                    var newBlog? = await _context.Blogs.FindAsync(blog.Id);
+                    var newBlog = await _context.Blogs.FindAsync(blog.Id);
                     newBlog.Updated = DateTime.Now;
                     
                     if(newBlog.Name != blog.Name)

@@ -26,10 +26,10 @@ namespace BlogProject.Models
 
         [DataType(DataType.Date)]
         [Display(Name = "Created Date")]
-        public DateTime Created { get; set; }
+        public DateTime? Created { get; set; }
         public DateTime? Updated { get; set; }
 
-        public ReadyStatus ReadyStatus { get; set; }
+        public ReadyStatus? ReadyStatus { get; set; }
 
         public string? Slug { get; set; }
 
