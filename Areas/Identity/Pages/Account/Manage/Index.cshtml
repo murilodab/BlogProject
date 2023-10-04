@@ -9,7 +9,7 @@
 <partial name="_StatusMessage" for="StatusMessage" />
 <div class="row">
     <div class="col-md-6">
-        <form id="profile-form" method="post">
+        <form id="profile-form" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
             <div class="form-floating mb-3">
                 <input asp-for="Username" class="form-control" placeholder="Please choose your username." disabled />
@@ -20,8 +20,20 @@
                 <label asp-for="Input.PhoneNumber" class="form-label"></label>
                 <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
             </div>
+
+            <div class="form-floating mb-3">
+                <div class="custom-file">
+                    <label asp-for="Input.Image" class="mb-2">Select Image</label>
+                    <input asp-for="Input.Image" type="file" class="form-control-file" accept=".png, .jpg, .jpeg, .bmp, .gif" />
+                </div>
+            </div>
+
+
             <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
         </form>
+    </div>
+    <div class="col-md-6">
+        <img src="@Model.CurrentImage" class=" img-fluid rounded-circle" width="200px"/>
     </div>
 </div>
 

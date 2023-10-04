@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using BlogProject.Models;
+using BlogProject.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -17,13 +18,17 @@ namespace BlogProject.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<BlogUser> _userManager;
         private readonly SignInManager<BlogUser> _signInManager;
+        private readonly IImageService _imageService;
+
 
         public IndexModel(
             UserManager<BlogUser> userManager,
-            SignInManager<BlogUser> signInManager)
+            SignInManager<BlogUser> signInManager,
+            IImageService imageService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _imageService = imageService;
         }
 
         /// <summary>
@@ -31,6 +36,9 @@ namespace BlogProject.Areas.Identity.Pages.Account.Manage
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
         public string Username { get; set; }
+
+
+        public string CurrentImage {  get; set; }
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -59,6 +67,9 @@ namespace BlogProject.Areas.Identity.Pages.Account.Manage
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
+
+            public IFormFile Image { get; set; }
+
         }
 
         private async Task LoadAsync(BlogUser user)
@@ -67,6 +78,7 @@ namespace BlogProject.Areas.Identity.Pages.Account.Manage
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
 
             Username = userName;
+            CurrentImage = _imageService.DecodeImage(user.ImageData, user.ContentType);
 
             Input = new InputModel
             {
@@ -110,6 +122,14 @@ namespace BlogProject.Areas.Identity.Pages.Account.Manage
                     return RedirectToPage();
                 }
             }
+
+            //if and only if the user selected a new image will I update their profile
+            if(Input.Image is not null)
+            {
+                user.ImageData = await _imageService.EncodeImageAsync(Input.Image);
+                user.ContentType = _imageService.ContentType(Input.Image);
+                await _userManager.UpdateAsync(user);
+            } 
 
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
