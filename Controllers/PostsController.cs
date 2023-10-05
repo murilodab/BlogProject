@@ -35,9 +35,30 @@ namespace BlogProject.Controllers
         }
 
         // GET: Posts/Details/5
-        public async Task<IActionResult> Details(int? id)
+        //public async Task<IActionResult> Details(int? id)
+        //{
+        //    if (id == null || _context.Posts == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var post = await _context.Posts
+        //        .Include(p => p.Blog)
+        //        .Include(p => p.BlogUser)
+
+        //        .FirstOrDefaultAsync(m => m.Id == id);
+        //    if (post == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return View(post);
+        //}
+
+        public async Task<IActionResult> Details(string slug)
         {
-            if (id == null || _context.Posts == null)
+
+            if (string.IsNullOrEmpty(slug))
             {
                 return NotFound();
             }
@@ -45,7 +66,10 @@ namespace BlogProject.Controllers
             var post = await _context.Posts
                 .Include(p => p.Blog)
                 .Include(p => p.BlogUser)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .Include(p => p.Tags)
+                .FirstOrDefaultAsync(m => m.Slug == slug);
+
+                
             if (post == null)
             {
                 return NotFound();
@@ -67,11 +91,12 @@ namespace BlogProject.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BlogId,Title,Abstract,Content,ReadyStatus,Image")] Post post, List<string> tagValues)
+        public async Task<IActionResult> Create([Bind("BlogId,Title,Abstract,Content,ReadyStatus,Image")] Post post, List<string> TagValues)
         {
             if (ModelState.IsValid)
             {
                 post.Created = DateTime.Now;
+
                 var authorId = _userManager.GetUserId(User);
                 post.BlogUserId = authorId;
 
@@ -80,14 +105,13 @@ namespace BlogProject.Controllers
                 post.ContentType = _imageService.ContentType(post.Image);
 
 
-
                 //Create the Slug and determine if it is unique
                 var slug = _slugService.UrlFriendly(post.Title);
 
-                if (! _slugService.IsUnique(slug))
+                if (!_slugService.IsUnique(slug))
                 {
                     ModelState.AddModelError("Title", "The Title you provided cannot be used as it results in a duplicate slug");
-                    ViewData["TagValues"] = string.Join(",", tagValues);
+                    ViewData["TagValues"] = string.Join(",", TagValues);
                     return View(post);
                 }
 
@@ -98,7 +122,7 @@ namespace BlogProject.Controllers
 
                 //how do I loop over the incoming list of string?
 
-                foreach(var tagText in tagValues)
+                foreach(var tagText in TagValues)
                 {
                     _context.Add(new Tag(){
                             PostId = post.Id,

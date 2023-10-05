@@ -6,7 +6,7 @@ function AddTag() {
 
     //create a new Select option
     let newOption = new Option(tagEntry.value, tagEntry.value);
-    document.getElementById("TagList").options[index++] = newOption;
+    document.getElementById("TagValues").options[index++] = newOption;
 
     //clear out the TagEntry control
     tagEntry.value = "";
@@ -17,15 +17,17 @@ function DeleteTag() {
 
     let tagCount = 1;
     while (tagCount > 0) {
-        let tagList = document.getElementById("TagList");
+        let tagList = document.getElementById("TagValues");
         let selectedIndex = tagList.selectedIndex;
-        if (selectedIndex > = 0) {
-            tagList.options[selectedIndex] = nulll;
+        if (selectedIndex >= 0){
+            tagList.options[selectedIndex] = null;
             --tagCount;
         }
-        else
-        tagCount = 0;
-        index--;
+        else{
+            tagCount = 0;
+            index--;
+        }
+      
     }
 
 }
