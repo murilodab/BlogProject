@@ -21,15 +21,15 @@
 <article>
     <div class="row">
         <div class="col text-center font-weight-bold h3">
-            Custom Post Tags
+            Tags
         </div>
     </div>
 
     <div class="row">
-        <div clss="col">
+        <div class="col text-center">
             @foreach(var tag in Model.Tags)
             {
-                <a asp-action = "TagIndex" asp-route-tag="@tag.Text.ToLower()">#@tag.Text</a>
+                <a class="btn btn-success btn-sm" asp-action ="TagIndex" asp-route-tag="@tag.Text">#@tag.Text.ToUpper()</a>
             }
         </div>
     </div>

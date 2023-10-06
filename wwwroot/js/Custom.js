@@ -19,15 +19,17 @@ function DeleteTag() {
     while (tagCount > 0) {
         let tagList = document.getElementById("TagValues");
         let selectedIndex = tagList.selectedIndex;
-        if (selectedIndex >= 0){
+        if (selectedIndex >= 0) {
             tagList.options[selectedIndex] = null;
             --tagCount;
         }
-        else{
+        else {
             tagCount = 0;
             index--;
         }
-      
     }
-
 }
+
+$('form').on("submit", function () {
+    $("#TagValues option").prop("selected", "selected");
+})
