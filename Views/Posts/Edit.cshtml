@@ -10,7 +10,7 @@
 <h4>Post</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-12">
         <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
@@ -40,20 +40,55 @@
                 <span asp-validation-for="Content" class="text-danger"></span>
             </div>
 
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col">
+                        <label class="control-label mb-1">Manage Tags</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <div class="row mb-2">
+                            <div class="col">
+                                <input type="text" class="form-control" id="TagEntry" placeholder="Insert Tag" />
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-6">
+                                <button onclick="AddTag()" type="button" name="Add" class="btn btn-dark btn-sm w-100">ADD</button>
+                            </div>
+                            <div class="col-6">
+                                <button onclick="DeleteTag()" name="Delete" type="button" class="btn btn-dark btn-sm w-100">DELETE</button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="col">
+                        <select class="btn-block form-select" name="TagValues" id="TagValues" size="4" multiple></select>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label asp-for="Image" class="control-label"></label>
+                <input type="file" name="NewImage" class="form-control" />
+                <span asp-validation-for="Image" class="text-danger"></span>
+            </div>
+
+
             <div class="form-group">
                 <label asp-for="ReadyStatus" class="control-label"></label>
                 <select asp-for="ReadyStatus" class="form-control" asp-items="Html.GetEnumSelectList<ReadyStatus>()"></select>
                 <span asp-validation-for="ReadyStatus" class="text-danger"></span>
             </div>
 
-            
-            <div class="form-group">
-                <label asp-for="Image" class="control-label"></label>
-                <input type="file" name ="NewImage" class="form-control" />
-                <span asp-validation-for="Image" class="text-danger"></span>
-            </div>
 
-           
+
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
@@ -66,9 +101,12 @@
 </div>
 
 @section Scripts {
-    
+
 
     <script>
+
+        let tagValues = '@ViewData["TagValues"]';
+
         $('#Content').summernote({
             placeholder: 'Post Body...',
             tabsize: 2,
@@ -76,7 +114,6 @@
         });
     </script>
 
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    <script src="~/js/Custom.js"></script>
+
 }
