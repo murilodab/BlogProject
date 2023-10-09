@@ -198,12 +198,19 @@ namespace BlogProject.Controllers
                     //Add in the new Tags from the Edit form
                     foreach(var tagText in TagValues)
                     {
-                        _context.Add(new Tag()
+                        if(tagText is null)
                         {
-                            PostId = post.Id,
-                            BlogUserId = newPost.BlogUserId,
-                            Text = tagText
-                        });
+                           continue;
+                        }
+                        else {
+                            _context.Add(new Tag()
+                            {
+                                PostId = post.Id,
+                                BlogUserId = newPost.BlogUserId,
+                                Text = tagText
+                            });
+                        }
+                        
                     }
 
                     

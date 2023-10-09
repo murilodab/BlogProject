@@ -6,3 +6,9 @@
 option{
     font-weight: bolder;
 }
+
+div.swal2-container.swal2-center.swal2-backdrop-show > div{
+
+    outline: 2px solid gray;
+   
+}
