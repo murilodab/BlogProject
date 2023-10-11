@@ -108,9 +108,24 @@ namespace BlogProject.Controllers
                 //Create the Slug and determine if it is unique
                 var slug = _slugService.UrlFriendly(post.Title);
 
+                //Create a varibale to store whether an error has occurred
+                var validationError = false;
+
+                if (string.IsNullOrEmpty(slug))
+                {
+                    validationError = true;
+                    ModelState.AddModelError("", "The Title you provided cannot be used as it results in an empty slug");
+                    
+                }
+
                 if (!_slugService.IsUnique(slug))
                 {
+                    validationError = true;
                     ModelState.AddModelError("Title", "The Title you provided cannot be used as it results in a duplicate slug");
+                }
+
+                if (validationError)
+                {
                     ViewData["TagValues"] = string.Join(",", TagValues);
                     return View(post);
                 }
@@ -135,8 +150,9 @@ namespace BlogProject.Controllers
 
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Description", post.BlogId);
+            ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Name", post.BlogId);
             ViewData["BlogUserId"] = new SelectList(_context.Users, "Id", "Id", post.BlogUserId);
+            ViewData["TagValues"] = string.Join(",", TagValues);
             return View(post);
         }
 
@@ -172,10 +188,13 @@ namespace BlogProject.Controllers
                 return NotFound();
             }
 
+            var Originalpost = await _context.Posts.Include(p => p.Tags).FirstOrDefaultAsync(p => p.Id == id);
+
             if (ModelState.IsValid)
             {
                 try
                 {
+                    //The originalPost
                     var newPost = await _context.Posts.Include(p => p.Tags).FirstOrDefaultAsync(p => p.Id == post.Id);
 
                     
@@ -184,6 +203,23 @@ namespace BlogProject.Controllers
                     newPost.Abstract = post.Abstract;
                     newPost.Content = post.Content;
                     newPost.ReadyStatus = post.ReadyStatus;
+
+                    var newSlug = _slugService.UrlFriendly(post.Title);
+                    if(newSlug != newPost.Slug)
+                    {
+                        if (_slugService.IsUnique(newSlug))
+                        {
+                            newPost.Title = post.Title;
+                            newPost.Slug = newSlug;
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("Title", "This Title cannot be used as it results in a duplicate slug");
+                             ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Name", post.BlogId);
+                            ViewData["TagValues"] = string.Join(",", newPost.Tags.Select(t => t.Text));
+                            return View(post);
+                        }
+                    }
 
                     if (newImage != null)
                     {
@@ -229,8 +265,10 @@ namespace BlogProject.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Description", post.BlogId);
+            ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Name", post.BlogId);
             ViewData["BlogUserId"] = new SelectList(_context.Users, "Id", "Id", post.BlogUserId);
+            ViewData["TagValues"] = string.Join(",", Originalpost.Tags.Select(t => t.Text));
+
             return View(post);
         }
 
