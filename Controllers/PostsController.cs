@@ -34,6 +34,19 @@ namespace BlogProject.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
+        public async Task<IActionResult> BlogPostIndex(int? id)
+        {
+            if(id is null)
+            {
+                return NotFound();
+            }
+
+            var posts = _context.Posts.Where(p => p.BlogId == id).ToList();
+
+            return View("Index", posts);
+        }
+
+
         // GET: Posts/Details/5
         //public async Task<IActionResult> Details(int? id)
         //{
@@ -118,7 +131,7 @@ namespace BlogProject.Controllers
                     
                 }
 
-                if (!_slugService.IsUnique(slug))
+                else if (!_slugService.IsUnique(slug))
                 {
                     validationError = true;
                     ModelState.AddModelError("Title", "The Title you provided cannot be used as it results in a duplicate slug");
@@ -126,6 +139,7 @@ namespace BlogProject.Controllers
 
                 if (validationError)
                 {
+                    ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Name", post.BlogId);
                     ViewData["TagValues"] = string.Join(",", TagValues);
                     return View(post);
                 }
@@ -152,7 +166,7 @@ namespace BlogProject.Controllers
             }
             ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Name", post.BlogId);
             ViewData["BlogUserId"] = new SelectList(_context.Users, "Id", "Id", post.BlogUserId);
-            ViewData["TagValues"] = string.Join(",", TagValues);
+            ViewData["TagValues"] = string.Join(",", post.Tags.Select(t => t.Text));
             return View(post);
         }
 
