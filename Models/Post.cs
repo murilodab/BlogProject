@@ -15,11 +15,11 @@ namespace BlogProject.Models
         public string? BlogUserId { get; set; }
 
         [Required]
-        [StringLength(75, ErrorMessage = "The {0} muat be at least {2} and no more than {1} characters long", MinimumLength = 2)]
+        [StringLength(75, ErrorMessage = "The {0} must be at least {2} and no more than {1} characters long", MinimumLength = 2)]
         public string Title { get; set; }
 
         [Required]
-        [StringLength(200, ErrorMessage = "The {0} muat be at least {2} and no more than {1} characters long", MinimumLength = 5)]
+        [StringLength(200, ErrorMessage = "The {0} must be at least {2} and no more than {1} characters long", MinimumLength = 5)]
         public string Abstract { get; set; }
         [Required]
         public string Content { get; set; }
