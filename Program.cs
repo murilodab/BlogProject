@@ -3,6 +3,7 @@ using BlogProject.Models;
 using BlogProject.Services;
 using BlogProject.ViewModels;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Build.Execution;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -49,6 +50,9 @@ builder.Services.AddScoped<IImageService, BasicImageService>();
 
 //Register the Slug Service
 builder.Services.AddScoped<ISlugService, BasicSlugService>();
+
+//Register Search Service
+builder.Services.AddScoped<BlogSearchService>();
 
 var app = builder.Build();
 
