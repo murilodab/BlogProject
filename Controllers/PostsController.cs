@@ -29,6 +29,37 @@ namespace BlogProject.Controllers
             _userManager = userManager;
         }
 
+        public async Task<IActionResult> SearchIndex(int? page, string searchTerm)
+        {
+            ViewData["SearchTerm"] = searchTerm;
+
+            var pageNumber = page ?? 1;
+            var pageSize = 5;
+
+            var posts = _context.Posts.Where(p => p.ReadyStatus == ReadyStatus.ProductionReady).AsQueryable();
+           
+            if (searchTerm != null)
+            {
+                searchTerm = searchTerm.ToLower();
+
+                posts = posts.Where(
+                    p => p.Title.ToLower().Contains(searchTerm) ||
+                    p.Abstract.ToLower().Contains(searchTerm) ||
+                    p.Content.ToLower().Contains(searchTerm) ||
+                    p.Comments.Any(c => c.Body.ToLower().Contains(searchTerm) ||
+                                        c.ModeratedBody.ToLower().Contains(searchTerm) ||
+                                        c.BlogUser.FirstName.ToLower().Contains(searchTerm) ||
+                                        c.BlogUser.LastName.ToLower().Contains(searchTerm) ||
+                                        c.BlogUser.Email.ToLower().Contains(searchTerm)));
+            }
+
+            posts = posts.OrderByDescending(p => p.Created);
+           
+
+            return View(await posts.ToPagedListAsync(pageNumber, pageSize));
+       
+        }
+
         // GET: Posts
         public async Task<IActionResult> Index()
         {
@@ -38,7 +69,7 @@ namespace BlogProject.Controllers
 
         public async Task<IActionResult> BlogPostIndex(int? id, int? page)
         {
-            if(id is null)
+            if (id is null)
             {
                 return NotFound();
             }
@@ -91,7 +122,7 @@ namespace BlogProject.Controllers
                 .Include(p => p.Tags)
                 .FirstOrDefaultAsync(m => m.Slug == slug);
 
-                
+
             if (post == null)
             {
                 return NotFound();
@@ -137,7 +168,7 @@ namespace BlogProject.Controllers
                 {
                     validationError = true;
                     ModelState.AddModelError("", "The Title you provided cannot be used as it results in an empty slug");
-                    
+
                 }
 
                 else if (!_slugService.IsUnique(slug))
@@ -154,18 +185,19 @@ namespace BlogProject.Controllers
                 }
 
                 post.Slug = slug;
-               
+
                 _context.Add(post);
                 await _context.SaveChangesAsync();
 
                 //how do I loop over the incoming list of string?
 
-                foreach(var tagText in TagValues)
+                foreach (var tagText in TagValues)
                 {
-                    _context.Add(new Tag(){
-                            PostId = post.Id,
-                            BlogUserId = authorId,
-                            Text = tagText,
+                    _context.Add(new Tag()
+                    {
+                        PostId = post.Id,
+                        BlogUserId = authorId,
+                        Text = tagText,
                     });
                 }
 
@@ -188,14 +220,14 @@ namespace BlogProject.Controllers
             }
 
             var post = await _context.Posts.Include(p => p.Tags).FirstOrDefaultAsync(p => p.Id == id);
-           
+
             if (post == null)
             {
                 return NotFound();
             }
             ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Name", post.BlogId);
             ViewData["TagValues"] = string.Join(",", post.Tags.Select(t => t.Text));
-            
+
             return View(post);
         }
 
@@ -220,7 +252,7 @@ namespace BlogProject.Controllers
                     //The originalPost
                     var newPost = await _context.Posts.Include(p => p.Tags).FirstOrDefaultAsync(p => p.Id == post.Id);
 
-                    
+
                     newPost.Updated = DateTime.Now;
                     newPost.Title = post.Title;
                     newPost.Abstract = post.Abstract;
@@ -228,7 +260,7 @@ namespace BlogProject.Controllers
                     newPost.ReadyStatus = post.ReadyStatus;
 
                     var newSlug = _slugService.UrlFriendly(post.Title);
-                    if(newSlug != newPost.Slug)
+                    if (newSlug != newPost.Slug)
                     {
                         if (_slugService.IsUnique(newSlug))
                         {
@@ -238,7 +270,7 @@ namespace BlogProject.Controllers
                         else
                         {
                             ModelState.AddModelError("Title", "This Title cannot be used as it results in a duplicate slug");
-                             ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Name", post.BlogId);
+                            ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Name", post.BlogId);
                             ViewData["TagValues"] = string.Join(",", newPost.Tags.Select(t => t.Text));
                             return View(post);
                         }
@@ -255,13 +287,14 @@ namespace BlogProject.Controllers
                     _context.Tags.RemoveRange(newPost.Tags);
 
                     //Add in the new Tags from the Edit form
-                    foreach(var tagText in TagValues)
+                    foreach (var tagText in TagValues)
                     {
-                        if(tagText is null)
+                        if (tagText is null)
                         {
-                           continue;
+                            continue;
                         }
-                        else {
+                        else
+                        {
                             _context.Add(new Tag()
                             {
                                 PostId = post.Id,
@@ -269,10 +302,10 @@ namespace BlogProject.Controllers
                                 Text = tagText
                             });
                         }
-                        
+
                     }
 
-                    
+
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -329,14 +362,14 @@ namespace BlogProject.Controllers
             {
                 _context.Posts.Remove(post);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool PostExists(int id)
         {
-          return (_context.Posts?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Posts?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
