@@ -16,7 +16,7 @@ namespace BlogProject.Models
         [Display(Name = "Comment")]
         public string Body { get; set; }
 
-        public DateTime? Created { get; set; }
+        public DateTime Created { get; set; }
         public DateTime? Updated { get; set; }
         public DateTime? Moderated { get; set; }
         public DateTime? Deleted { get; set; }

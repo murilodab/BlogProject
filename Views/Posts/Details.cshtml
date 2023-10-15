@@ -1,8 +1,13 @@
-﻿@model BlogProject.Models.Post
+﻿@using BlogProject.Services
+
+@inject IImageService ImageService
+
+
+@model BlogProject.Models.Post
 
 @{
     ViewData["Title"] = "Details";
-   //Layout = "~/Views/Shared/_Layout.cshtml";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <!-- Post Content-->
@@ -27,9 +32,9 @@
 
     <div class="row">
         <div class="col text-center">
-            @foreach(var tag in Model.Tags)
+            @foreach (var tag in Model.Tags)
             {
-                <a class="btn btn-success btn-sm" asp-action ="TagIndex" asp-route-tag="@tag.Text">#@tag.Text.ToUpper()</a>
+                <a class="btn btn-success btn-sm" asp-action="TagIndex" asp-route-tag="@tag.Text">#@tag.Text.ToUpper()</a>
             }
         </div>
     </div>
@@ -37,7 +42,7 @@
 
 <hr />
 
-<!-- Displaying Comments related to this post -->
+<!-- Write comments-->
 <div>
     @if (User.Identity.IsAuthenticated)
     {
@@ -45,25 +50,77 @@
             @Html.Hidden("PostId", Model.Id)
             <div class="row">
                 <div class="form-group">
-                    <label class="h2 control-label font-weight-bold">Add Comment</label>             
+                    <label class="h2 control-label font-weight-bold">Add Comment</label>
                 </div>
             </div>
             <div class="row mb-2">
                 <textarea name="body" class="from-control" rows="5"></textarea>
             </div>
-            
+
 
             <button type="submit" class="btn btn-dark w-100 btn-sm mb-2">Submit</button>
 
         </form>
-       
+
     }
     else
     {
         <a class="btn w-100 btn-sm btn-dark" asp-area="Identity" asp-page="/Account/Login">
-            Login to add comments</a>
+            Login to add comments
+        </a>
     }
 </div>
 
+<!-- Display Comments-->
 
-<!-- Displaly the image of the comment's Author -->
+<hr />
+
+
+
+<section style="background-color:#202529;">
+
+
+    <div class="container my-5 py-3">
+        <div class="d-flex justify-content-center">
+            <span class="text-light mb-3">@Model.Comments.Count COMMENT(S)</span>
+        </div>
+
+
+        <div class="card rounded">
+            <div class="card-body p-4">
+                @{
+                    var n = 0;
+
+                    foreach (var comment in Model.Comments)
+                    {
+
+
+                        <div class="d-flex flex-start mt-3">
+                            <div class="flex-shrink-0">
+                                <img class="rounded-circle me-3" style="width:70px;" src="@ImageService.DecodeImage(comment.BlogUser.ImageData, comment.BlogUser.ContentType)" />
+                            </div>
+
+                            <div>
+                                <h5 class="fw-bold mb-1">@comment.BlogUser.FullName</h5>
+                                <div class="d-flex align-items-center">
+                                    <small><i> @comment.Created.ToString("MMM dd, yyyy") </i></small>
+                                </div>
+                                <p class="">@comment.Body</p>
+                            </div>
+
+
+                        </div>
+
+                        n++;
+                        if (n < Model.Comments.Count())
+                        {
+                            <hr class="my-0" />
+                        }
+                    }
+                }
+            </div>
+        </div>
+
+
+    </div>
+</section>
