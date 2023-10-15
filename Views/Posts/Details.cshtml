@@ -1,6 +1,8 @@
 ﻿@using BlogProject.Services
+@using Microsoft.AspNetCore.Identity;
 
 @inject IImageService ImageService
+@inject UserManager<BlogUser> userManager
 
 
 @model BlogProject.Models.Post
@@ -82,7 +84,7 @@
 
     <div class="container my-5 py-3">
         <div class="d-flex justify-content-center">
-            <span class="text-light mb-3">@Model.Comments.Count COMMENT(S)</span>
+            <span id="commentSection" class="text-light mb-3">@Model.Comments.Count COMMENT(S)</span>
         </div>
 
 
@@ -93,6 +95,7 @@
 
                     foreach (var comment in Model.Comments)
                     {
+                     
 
 
                         <div class="d-flex flex-start mt-3">
@@ -105,22 +108,58 @@
                                 <div class="d-flex align-items-center">
                                     <small><i> @comment.Created.ToString("MMM dd, yyyy") </i></small>
                                 </div>
-                                <p class="">@comment.Body</p>
+                                <p class="">@comment.Body</p>                       
                             </div>
 
+                        </div>
+                        @if (comment.Moderated is null && comment.Deleted is null && comment.BlogUserId == userManager.GetUserId(User))
+                        {
+                            
+                            <div class="d-flex justify-content-end">
+                                <button data-bs-toggle="modal" data-bs-target="#editModal" class="mt-0 btn btn-sm btn-warning float-right font-weight-bold mb-2">EDIT</button>
+                            </div>
+                        }
+                        @*Modals*@
 
+                        <div class="modal" id="editModal">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Editing Comment...</h4>
+                                    </div>
+
+                                    <!--Modal Body-->
+                                    <div class="modal-body">
+                                        <form asp-action="Edit" asp-controller="Comments">
+                                            @Html.Hidden("Id", comment.Id)
+
+                                            <div class="form-group">
+                                                <textarea name="Body" class="form-control" required>@comment.Body</textarea>
+                                            </div>
+
+                                            <button class="mt-2 btn btn-sm btn-success border-success font-weight-bold" type="submit">SUBMIT</button>
+
+                                        </form>
+                                    </div>
+                                    <!-- Modal Footer -->
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-sm btn-dark font-weight-bold" data-bs-dismiss="modal">CLOSE</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         n++;
+
                         if (n < Model.Comments.Count())
                         {
                             <hr class="my-0" />
                         }
+
                     }
                 }
             </div>
         </div>
-
-
-    </div>
 </section>
+
+
