@@ -38,4 +38,32 @@
 <hr />
 
 <!-- Displaying Comments related to this post -->
+<div>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <form asp-action="Create" asp-controller="Comments" method="post">
+            @Html.Hidden("PostId", Model.Id)
+            <div class="row">
+                <div class="form-group">
+                    <label class="h2 control-label font-weight-bold">Add Comment</label>             
+                </div>
+            </div>
+            <div class="row mb-2">
+                <textarea name="body" class="from-control" rows="5"></textarea>
+            </div>
+            
+
+            <button type="submit" class="btn btn-dark w-100 btn-sm mb-2">Submit</button>
+
+        </form>
+       
+    }
+    else
+    {
+        <a class="btn w-100 btn-sm btn-dark" asp-area="Identity" asp-page="/Account/Login">
+            Login to add comments</a>
+    }
+</div>
+
+
 <!-- Displaly the image of the comment's Author -->
