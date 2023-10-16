@@ -9,57 +9,68 @@
 
 @model IPagedList<Post>
 
-@{
-    ViewData["Title"] = "Index";
-}
 
-<h1>Index</h1>
+<div class="row">
+    @if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
+    {
+        <p>
+            <a asp-action="Create">Create New</a>
+        </p>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Image
-            </th>
+    }
 
-            <th>
-                Title
-            </th>
-            <th>
-                Abstract
-            </th>
-
-
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+    <table class="table">
+        <thead>
             <tr>
-                <td>
-                    <img class="img-fluid" width="200px" src="@imageService.DecodeImage(item.ImageData, item.ContentType)" />
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Abstract)
-                </td>
+                <th>
+                    Image
+                </th>
+
+                <th>
+                    Title
+                </th>
+                <th>
+                    Abstract
+                </th>
 
 
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-slug="@item.Slug">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                </td>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <img class="img-fluid" width="200px" src="@imageService.DecodeImage(item.ImageData, item.ContentType)" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Abstract)
+                    </td>
+
+
+                    <td>
+                        @if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
+                        {
+                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+
+                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+
+                        }
+
+                        <a asp-action="Details" asp-route-slug="@item.Slug">Details</a>
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
 
 <hr />
 <div class="row">

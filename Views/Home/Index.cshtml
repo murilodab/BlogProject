@@ -1,61 +1,84 @@
-﻿@using BlogProject.Models
+﻿@using BlogProject.Services
+@using BlogProject.Models
 @using X.PagedList
 @using X.PagedList.Mvc.Core
 @using X.PagedList.Web.Common
-@model IPagedList<Blog>
+@inject IImageService ImageService
+
+@model IPagedList<BlogProject.Models.Blog>
 
 @{
     ViewData["Title"] = "Home Page";
-    
+
 }
-<div class="container px-4 px-lg-5">
-    <div class="row gx-4 gx-lg-5 justify-content-center">
-        <div class="col-md-10 col-lg-8 col-xl-7">
+<div class="container text-center">
+    <div class="row row-cols-sm-1 row-cols-md-3">
+        @foreach (var blog in Model)
+        {
+            <div class="col">
+                <div class="card h-100" style="width:20rem;">
+                    <img class="card-img-top img-fluid" id="cardImg" src="@ImageService.DecodeImage(blog.ImageData, blog.ContentType)">
 
-            @foreach(var blog in Model)
-            {
-                <!-- Post preview-->
-                <div class="post-preview">
-                    <a asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@blog.Id">
-                        <h2 class="post-title">
+                    <div class="card-body">
+                        <!-- Post preview-->
+                        <h2 class="card-title">
                             @blog.Name
-                            </h2>
-                        <h3 class="post-subtitle">
+                        </h2>
+                        <p class="card-text text-truncate">
                             @blog.Description
-                            </h3>
-                    </a>
-                    <p class="post-meta">
-                        Authored by
-                        <a href="#!">@blog.BlogUser.FullName</a> 
-                        
-                        on @blog.Created.ToString("MMM dd, yyyy")
-                    </p>
-                </div>
-                <hr />
-            }
+                        </p>
+                        <a class="mb-2 btn btn-primary" asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@blog.Id">
+                            Read More
+                        </a>
+                    </div>
 
-           
-            
-            <!-- Pager-->
-            <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" href="#!">Older Posts →</a></div>
-        </div>
+                    <div class="card-footer text-body-secondary">
+                        <small class="text-body-secondary">
+                            Authored by
+                            <a href="#!">@blog.BlogUser.FullName</a>
+                            on @blog.Created.ToString("MMM dd, yyyy")
+                        </small>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+
+    <hr />
+
+    <!-- Pager-->
+    <div class="row">
+
+        @if (User.IsInRole("Administrator"))
+        {
+            <div class="col d-flex justify-content-end">
+                <a class="btn btn-md btn-primary text-uppercase" asp-controller="Blogs" asp-action="Create">Create New</a>
+            </div>
+        }
+
+       
     </div>
 </div>
 
-            <!-- Add Pagin Controls Here-->
-            <div class="row">
-                <div class = "col h3">
-                    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-                </div>
-            </div>
 
-            <div class="row">
-                <div class="col">
-                    @Html.PagedListPager(Model, page => Url.Action("Index", new { page = page}), 
-                    new PagedListRenderOptions
-                    {
-                        LiElementClasses = new string[]{"page-item"},
-                        PageClasses = new string[] {"page-link"}
-                    })
-                </div>
-            </div>
+
+<!-- Add Pagin Controls Here-->
+
+<div class="row">
+    <div class="d-flex col h4 justify-content-center mt-3">
+        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+    </div>
+</div>
+
+<div class="row">
+    <div class="d-flex justify-content-center col">
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page = page}),
+        new PagedListRenderOptions
+        {
+        LiElementClasses = new string[]{"page-item"},
+        PageClasses = new string[] {"page-link"}
+        })
+    </div>
+</div>
+</div>

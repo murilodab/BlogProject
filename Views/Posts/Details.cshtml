@@ -37,7 +37,7 @@
         <div class="col text-center">
             @foreach (var tag in Model.Tags)
             {
-                <a class="btn btn-success btn-sm" asp-action="TagIndex" asp-route-tag="@tag.Text">#@tag.Text.ToUpper()</a>
+                <a class="btn btn-success btn-sm" asp-action="TagIndex" asp-controller="Posts" asp-route-tag="@tag.Text">#@tag.Text.ToUpper()</a>
             }
         </div>
     </div>

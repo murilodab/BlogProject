@@ -11,6 +11,8 @@ using BlogProject.Services;
 using Microsoft.AspNetCore.Identity;
 using BlogProject.Enums;
 using X.PagedList;
+using Microsoft.AspNetCore.Authorization;
+using MailKit.Search;
 
 namespace BlogProject.Controllers
 {
@@ -71,6 +73,21 @@ namespace BlogProject.Controllers
 
         }
 
+        public async Task<IActionResult> TagIndex(int? page, string tag)
+        {
+            ViewData["SearchTerm"] = tag;
+
+            var pageNumber = page ?? 1;
+            var pageSize = 5;
+
+            var posts = _blogSearchService.Search(tag);
+
+            return View(await posts.ToPagedListAsync(pageNumber, pageSize));
+
+        }
+
+
+
 
         // GET: Posts/Details/5
         //public async Task<IActionResult> Details(int? id)
@@ -121,6 +138,7 @@ namespace BlogProject.Controllers
         }
 
         // GET: Posts/Create
+        [Authorize(Roles = "Administrator, Moderator")]
         public IActionResult Create()
         {
             ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Name");
@@ -131,8 +149,10 @@ namespace BlogProject.Controllers
         // POST: Posts/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator, Moderator")]
         public async Task<IActionResult> Create([Bind("BlogId,Title,Abstract,Content,ReadyStatus,Image")] Post post, List<string> TagValues)
         {
             if (ModelState.IsValid)
@@ -201,6 +221,7 @@ namespace BlogProject.Controllers
         }
 
         // GET: Posts/Edit/5
+        [Authorize(Roles = "Administrator, Moderator")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Posts == null)
@@ -225,6 +246,7 @@ namespace BlogProject.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator, Moderator")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,BlogId,Title,Abstract,Content,ReadyStatus")] Post post, IFormFile? newImage, List<string> TagValues)
         {
             if (id != post.Id)
@@ -318,6 +340,7 @@ namespace BlogProject.Controllers
         }
 
         // GET: Posts/Delete/5
+        [Authorize(Roles = "Administrator, Moderator")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Posts == null)
@@ -340,6 +363,7 @@ namespace BlogProject.Controllers
         // POST: Posts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator, Moderator")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Posts == null)

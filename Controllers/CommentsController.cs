@@ -79,7 +79,7 @@ namespace BlogProject.Controllers
                 comment.Created = DateTime.Now;
                 _context.Add(comment);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Details", "Posts", new {slug = theComment.Post.Slug }, "commentSection");
+                return RedirectToAction("Details", "Posts", new {slug = comment.Post.Slug }, "commentSection");
             }
 
             if (string.IsNullOrEmpty(comment.Body))
