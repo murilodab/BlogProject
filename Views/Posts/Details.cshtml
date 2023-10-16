@@ -57,13 +57,13 @@
                 </div>
             </div>
             <div class="row mb-2">
-                <textarea name="body" class="from-control" rows="5"></textarea>
+                <textarea name="body" id="commentArea" class="form-control" rows="5" required></textarea>
+
             </div>
-
-
-            <button type="submit" class="btn btn-dark w-100 btn-sm mb-2">Submit</button>
-
+            <button name="Add" type="submit" class="btn btn-dark w-100 btn-sm mb-2">Submit</button>
         </form>
+
+
 
     }
     else
@@ -73,8 +73,6 @@
         </a>
     }
 </div>
-
-<!-- Display Comments-->
 
 <hr />
 
@@ -123,7 +121,7 @@
                                 
                                 @if (string.IsNullOrEmpty(comment.Body))
                                 {
-                                    
+                                    <span class="small font-italic">Comment not available...</span>
                                 }
                                 else if(comment.Moderated is not null)
                                 {
@@ -268,3 +266,15 @@
                 }
             </div>
 </section>
+
+@section Scripts{
+
+  
+
+    <script>
+        if ($('commentField').val() === "") {
+        e.preventDefault();
+    }
+</script>
+}
+

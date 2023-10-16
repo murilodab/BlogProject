@@ -1,5 +1,7 @@
 ﻿let index = 0;
 
+
+
 function AddTag() { 
     //get a refernce to the TagEntry input element
     var tagEntry = document.getElementById("TagEntry");
@@ -61,6 +63,7 @@ function DeleteTag() {
 }
 
 
+
 $('form').on("submit", function () {
     $("#TagValues option").prop("selected", "selected");
 })
@@ -98,6 +101,8 @@ function search(str) {
     }
 
 }
+
+
 
 const MySwal = Swal.mixin({
 
