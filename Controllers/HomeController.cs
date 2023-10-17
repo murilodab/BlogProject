@@ -12,6 +12,9 @@ namespace BlogProject.Controllers
 {
     public class HomeController : Controller
     {
+        [ViewData]
+        public string Title { get; set; }
+
         private readonly ILogger<HomeController> _logger;
         private readonly IBlogEmailSender _emailSender;
         private readonly ApplicationDbContext _context;
@@ -25,8 +28,10 @@ namespace BlogProject.Controllers
 
         public async Task<IActionResult> Index(int? page)
         {
+            Title = "Home Page";
+
             var pageNumber = page ?? 1;
-            var pageSize = 3;
+            var pageSize = 6;
 
             var blogs = _context.Blogs.Include(b => b.BlogUser).Where(
                 

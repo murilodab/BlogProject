@@ -5,87 +5,92 @@
 @using X.PagedList.Web.Common
 
 
-@inject IImageService imageService
+@inject IImageService ImageService
 
 @model IPagedList<Post>
 
+@if (Model.PageNumber <= 1)
+{
+    <h3>Recent Posts</h3>
 
-<div class="row">
-    @if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
+    <hr />
+}
+
+
+<div id="blogContainer" class="row row-crow-cols-1 row-cols-md-3 g-4">
+
+    @foreach (var post in Model)
     {
-        <p>
-            <a asp-action="Create">Create New</a>
-        </p>
+        <div class="col">
+            <div class="card h-100" style="min-height: 30vh">
+                <img class="card-img-top img-fluid" id="cardImg" src="@ImageService.DecodeImage(post.ImageData, post.ContentType)">
 
+                <div class="card-body text-left">
+                    <!-- Post preview-->
+                    <a class="mb-2" asp-controller="Posts" asp-action="Details" asp-route-slug="@post.Slug">
+                        <h2 class="card-title">
+                            @post.Title
+                        </h2>
+                    </a>
+
+                    
+                    <p class="card-text text-truncate">
+                        @post.Abstract
+                    </p>
+                    
+                    @if(User.IsInRole("Administrator") || User.IsInRole("Moderator"))
+                    {
+                        <div class=" row text-center">
+                            <div class="col">
+                            <a class="btn btn-warning btn-sm w-100" asp-action="Edit" asp-controller="Posts" asp-route-id="@post.Id">
+                                Edit Post</a>
+                                </div>
+                                <div class="col">
+                                <a class="btn btn-danger btn-sm w-100" asp-action="Delete" asp-controller="Posts" asp-route-id="@post.Id">
+                                    Delete Post
+                                </a>
+                                    </div>
+                            
+                        </div>
+                    }
+
+                </div>              
+            </div>
+        </div>
     }
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    Image
-                </th>
-
-                <th>
-                    Title
-                </th>
-                <th>
-                    Abstract
-                </th>
-
-
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        <img class="img-fluid" width="200px" src="@imageService.DecodeImage(item.ImageData, item.ContentType)" />
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Title)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Abstract)
-                    </td>
-
-
-                    <td>
-                        @if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
-                        {
-                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-
-                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-
-                        }
-
-                        <a asp-action="Details" asp-route-slug="@item.Slug">Details</a>
-
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
 </div>
 
+<!-- Pager-->
+@if (Model.PageCount > 1 && Model.PageNumber <= 1)
+{
+    <div class="row">
 
+        <div class="col d-flex justify-content-end mb-2 mt-2">
+            <a class="btn btn-md btn-primary text-uppercase" href="/?page=2">View More</a>
 
-<hr />
-<div class="row">
-    <div class="col h3">
-        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+        </div>
     </div>
-</div>
+}
 
-<div class="row">
-    <div class="col">
-        @Html.PagedListPager(Model, page => Url.Action("BlogPostIndex", new {id = Model.FirstOrDefault().BlogId, page = page}),
+<!-- Add Pagin Controls Here-->
+@if (Model.PageNumber > 1)
+{
+    <div class="row">
+        <div class="d-flex col h4 justify-content-center mt-3">
+            Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="d-flex justify-content-center col">
+            @Html.PagedListPager(Model, page => Url.Action("Index", new { page = page}),
         new PagedListRenderOptions
         {
         LiElementClasses = new string[]{"page-item"},
-        PageClasses = new string[]{"page-link"}
+        PageClasses = new string[] {"page-link"}
         })
+        </div>
     </div>
-</div>
+
+}
+

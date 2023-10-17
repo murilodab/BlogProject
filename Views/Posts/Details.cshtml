@@ -8,16 +8,12 @@
 
 @model BlogProject.Models.Post
 
-@{
-    ViewData["Title"] = "Details";
-    //Layout = "~/Views/Shared/_Layout.cshtml";
-}
 
 <!-- Post Content-->
 
 <article>
     <div class="row">
-        <div class="col-lg-8 col-md-10 mx-auto">
+        <div class="col-lg-8 col-md-10 mx-auto" id="postBodySection">
             @Html.Raw(Model.Content)
         </div>
     </div>

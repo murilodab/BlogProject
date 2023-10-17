@@ -13,11 +13,13 @@
     <link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
     <link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css" />
 
-    <!-- Custom CSS-->
-    <link href="~/css/Custom.css" rel="stylesheet" />
 
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="~/css/styles.css" rel="stylesheet" />
+
+
+    <!-- Custom CSS-->
+    <link href="~/css/Custom.css" rel="stylesheet" />
 
     <!-- Sweet alert-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css">
@@ -25,44 +27,80 @@
 
     <!-- JQuery -->
     <script type="text/javascript" src="//code.jquery.com/jquery-3.6.0.min.js"></script>
-    
+
     <!-- include summernote css/js -->
     <link href="~/css/summernote-lite.css" rel="stylesheet" />
     <script src="~/js/summernote-lite.js"></script>
 </head>
 <body>
     <!-- Navigation-->
-    <nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
-        <div class="container px-4 px-lg-5">
-            <a class="navbar-brand" asp-controller="Home" asp-action="Index">Start Bootstrap</a>
+    <nav class="navbar navbar-expand-xl">
+        <div class="container-fluid px-4 px-lg-5">
+
+            <a class="navbar-brand" asp-controller="Home" asp-action="Index">Murilo's Blog</a>
+
+
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                Menu
                 <i class="fas fa-bars"></i>
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
+
                 <ul class="navbar-nav ms-auto py-4 py-lg-0">
+
                     <li class="nav-item">
                         <a class="nav-link px-lg-3 py-3 py-lg-4" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link px-lg-3 py-3 py-lg-4" asp-controller="Home" asp-action="About">About</a>
-                        </li>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link px-lg-3 py-3 py-lg-4" asp-controller="Home" asp-action="Contact">Contact</a>
-                        </li>
+                    </li>
 
-                    @if (User.IsInRole("Administrator"))
+                    @if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
                     {
-                        <li class="nav-item">
-                            <a class="nav-link px-lg-3 py-3 py-lg-4" asp-controller="Blogs" asp-action="Create">Create Blog</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle px-lg-3 py-3 py-lg-4" role="button" data-bs-toggle="dropdown" arie-expanded="false">
+                                Manage Blog
+                            </a>
+
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" asp-controller="Blogs" asp-action="Create">Create Blog</a></li>
+                                <li><a class="dropdown-item" asp-controller="Posts" asp-action="Create">Create Post</a></li>
+                                <li><a class="dropdown-item" asp-controller="Blogs" asp-action="Index">Blogs</a></li>
+                                <li><a class="dropdown-item" asp-controller="Posts" asp-action="Index">Posts</a></li>
+                            </ul>
+
                         </li>
                     }
-                   
+
+                    <li class="nav-item order-first align-self-center">
+                        <form asp-action="SearchIndex" asp-controller="Posts">
+                            <div class="input-group ">
+                                <div class="form-outline  ">
+                                    <input type="text" id="searchForm" name="SearchTerm" class="form-control search-hover" placeholder="Search Murilo's Blog">
+                                </div>
+                                <button type="button" id="searchButton" class="btn btn-primary rounded ms-2">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </li>
+
+
 
                 </ul>
-                <partial name="_LoginPartial" />
+                <div>
+                    <partial class="nav-link px-lg-3 py-3 py-lg-4" name="_LoginPartial" />
+                </div>
             </div>
+
+
+
+
+
         </div>
+
     </nav>
     <!-- Page Header-->
     <header class="masthead" style="background-image: url('/assets/img/home-bg.jpg');">
@@ -73,14 +111,7 @@
                         <h1>Clean Blog</h1>
                         <span class="subheading">A Blog Theme by Start Bootstrap</span>
 
-                        <form asp-action="SearchIndex" asp-controller="Posts">
-                            <div class="input-group mt-5">
-                                <input type="text" name="SearchTerm" class="form-control" placeholder="Search Term">
-                                <div class="input-group-append">
-                                    <button class="btn btn-warning btn-block btn-sm" type="submit">Search</button>
-                                </div>
-                            </div>
-                        </form>
+
 
                     </div>
                 </div>
@@ -88,12 +119,12 @@
         </div>
     </header>
     <!-- Main Content-->
-    <div class="container">
+    <div class="container-lg">
         <main class="content">
             @RenderBody()
         </main>
     </div>
-    
+
 
     <!-- Footer-->
     <footer class="border-top">
@@ -146,7 +177,7 @@
 
     <script>let tagValues = '@ViewData["TagValues"]';</script>
     <script src="~/js/Custom.js"></script>
-   
+
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

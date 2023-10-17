@@ -13,11 +13,15 @@ using BlogProject.Enums;
 using X.PagedList;
 using Microsoft.AspNetCore.Authorization;
 using MailKit.Search;
+using System.Reflection;
 
 namespace BlogProject.Controllers
 {
     public class PostsController : Controller
     {
+        [ViewData]
+        public string Title { get; set; }
+
         private readonly ApplicationDbContext _context;
         private readonly ISlugService _slugService;
         private readonly IImageService _imageService;
@@ -47,14 +51,21 @@ namespace BlogProject.Controllers
         }
 
         // GET: Posts
+        [Authorize(Roles = "Administrator, Moderator")]
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Posts.Include(p => p.Blog).Include(p => p.BlogUser);
             return View(await applicationDbContext.ToListAsync());
         }
 
+
+       
+
         public async Task<IActionResult> BlogPostIndex(int? id, int? page)
         {
+
+           
+
             if (id is null)
             {
                 return NotFound();
@@ -69,6 +80,11 @@ namespace BlogProject.Controllers
                     .OrderByDescending(p => p.Created)
                     .ToPagedListAsync(pageNumber, pageSize);
 
+            var blogPost = await _context.Blogs.Where(b => b.Id == id)
+                                               .FirstOrDefaultAsync();
+
+            Title = blogPost.Name;
+
             return View(posts);
 
         }
@@ -76,6 +92,8 @@ namespace BlogProject.Controllers
         public async Task<IActionResult> TagIndex(int? page, string tag)
         {
             ViewData["SearchTerm"] = tag;
+
+            Title = tag;
 
             var pageNumber = page ?? 1;
             var pageSize = 5;
@@ -126,6 +144,9 @@ namespace BlogProject.Controllers
                 .ThenInclude(c=> c.BlogUser)
                 .FirstOrDefaultAsync(m => m.Slug == slug);
 
+            var postTitle = await _context.Posts.Where(p => p.Slug == slug).FirstOrDefaultAsync();
+
+            Title = postTitle.Title;
 
             if (post == null)
             {
@@ -330,7 +351,7 @@ namespace BlogProject.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", "Posts", new { slug = Originalpost.Slug }, "postBodySection");
             }
             ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Name", post.BlogId);
             ViewData["BlogUserId"] = new SelectList(_context.Users, "Id", "Id", post.BlogUserId);

@@ -7,64 +7,65 @@
 
 @model IPagedList<BlogProject.Models.Blog>
 
-@{
-    ViewData["Title"] = "Home Page";
-
-}
-<div class="container text-center">
-    <div class="row row-cols-sm-1 row-cols-md-3">
-        @foreach (var blog in Model)
-        {
-            <div class="col">
-                <div class="card h-100" style="width:20rem;">
-                    <img class="card-img-top img-fluid" id="cardImg" src="@ImageService.DecodeImage(blog.ImageData, blog.ContentType)">
-
-                    <div class="card-body">
-                        <!-- Post preview-->
-                        <h2 class="card-title">
-                            @blog.Name
-                        </h2>
-                        <p class="card-text text-truncate">
-                            @blog.Description
-                        </p>
-                        <a class="mb-2 btn btn-primary" asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@blog.Id">
-                            Read More
-                        </a>
-                    </div>
-
-                    <div class="card-footer text-body-secondary">
-                        <small class="text-body-secondary">
-                            Authored by
-                            <a href="#!">@blog.BlogUser.FullName</a>
-                            on @blog.Created.ToString("MMM dd, yyyy")
-                        </small>
-                    </div>
-                </div>
-            </div>
-        }
-    </div>
-
+@if (Model.PageNumber <= 1)
+{
+    <h3>Most Recent</h3>
 
     <hr />
+}
+<div id="blogContainer" class="row row-crow-cols-1 row-cols-md-3 g-4">
 
-    <!-- Pager-->
-    <div class="row">
+    @foreach (var blog in Model)
+    {
+        <div class="col">
+            <div class="card h-100" style="min-height: 30vh">
+                <img class="card-img-top img-fluid" id="cardImg" src="@ImageService.DecodeImage(blog.ImageData, blog.ContentType)">
 
-        @if (User.IsInRole("Administrator"))
-        {
-            <div class="col d-flex justify-content-end">
-                <a class="btn btn-md btn-primary text-uppercase" asp-controller="Blogs" asp-action="Create">Create New</a>
+                <div class="card-body">
+                    <!-- Post preview-->
+                    <h2 class="card-title">
+                        @blog.Name
+                    </h2>
+                    <p class="card-text text-truncate">
+                        @blog.Description
+                    </p>
+                    <a class="mb-2 btn btn-primary" asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@blog.Id">
+                        Read More
+                    </a>
+                </div>
+
+                <div class="card-footer text-body-secondary">
+                    <small class="text-body-secondary">
+                        Authored by
+                        <a href="#!">@blog.BlogUser.FullName</a>
+                        on @blog.Created.ToString("MMM dd, yyyy")
+                    </small>
+                </div>
             </div>
-        }
-
-       
-    </div>
+        </div>
+    }
 </div>
 
 
 
+
+<!-- Pager-->
+
+@if(Model.PageCount > 1 && Model.PageNumber <=1)
+{
+<div class="row">
+
+    <div class="col d-flex justify-content-end mb-2 mt-2">
+        <a class="btn btn-md btn-primary text-uppercase" href="/?page=2">View More</a>
+
+    </div>
+</div>
+}
+
 <!-- Add Pagin Controls Here-->
 
+@if(Model.PageNumber > 1)
+{
 <div class="row">
     <div class="d-flex col h4 justify-content-center mt-3">
         Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
@@ -81,4 +82,5 @@
         })
     </div>
 </div>
-</div>
+
+}

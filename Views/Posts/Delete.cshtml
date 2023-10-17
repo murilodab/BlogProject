@@ -1,4 +1,9 @@
-﻿@model BlogProject.Models.Post
+﻿@using BlogProject.Services
+@using BlogProject.Models
+@inject IImageService ImageService
+
+
+@model Post
 
 @{
     ViewData["Title"] = "Delete";
@@ -11,24 +16,20 @@
     <h4>Post</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        
+            <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Title)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Title)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Abstract)
+            @Html.DisplayNameFor(post => post.Abstract)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Abstract)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Content)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Content)
-        </dd>
+        
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Created)
         </dt>
@@ -48,40 +49,35 @@
             @Html.DisplayFor(model => model.ReadyStatus)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Slug)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Slug)
-        </dd>
-        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.ImageData)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ImageData)
-        </dd>
+         <dd class = "col-sm-10">
+                <img class="img-fluid" style="width:80px;"  id="cardImg" src="@ImageService.DecodeImage(Model.ImageData, Model.ContentType)">          
+         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ContentType)
+            @Html.DisplayNameFor(post => post.Blog)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ContentType)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Blog)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Blog.Description)
+            @Html.DisplayFor(model => model.Blog.Name)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.BlogUser)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.BlogUser.Id)
+            @Html.DisplayFor(model => model.BlogUser.FullName)
         </dd>
-    </dl>
     
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
+        
+    
+
+    <form asp-action="Delete" asp-controller="Posts">
+        <input type="hidden" asp-for="Id"/>
         <input type="submit" value="Delete" class="btn btn-danger" /> |
         <a asp-action="Index">Back to List</a>
     </form>
+
+    
+
+    
+    </dl>
 </div>

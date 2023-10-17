@@ -1,16 +1,21 @@
 ﻿using BlogProject.Enums;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+
 
 namespace BlogProject.Models
 {
     public class Post
     {
+
+       
         public int Id { get; set; }
 
         [Display(Name = "Blog Name")]
         public int BlogId { get; set; }
+
 
         public string? BlogUserId { get; set; }
 
@@ -26,7 +31,7 @@ namespace BlogProject.Models
 
         [DataType(DataType.Date)]
         [Display(Name = "Created Date")]
-        public DateTime? Created { get; set; }
+        public DateTime Created { get; set; }
         public DateTime? Updated { get; set; }
 
         public ReadyStatus? ReadyStatus { get; set; }
@@ -41,6 +46,8 @@ namespace BlogProject.Models
 
         //Navigation Properties
         public virtual Blog? Blog { get; set; } //parent
+
+        [Display(Name = "Author")]
         public virtual BlogUser? BlogUser { get;set; } //parent
 
         public virtual ICollection<Tag> Tags { get; set; } = new HashSet<Tag>(); //childs
