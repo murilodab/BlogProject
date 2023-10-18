@@ -23,22 +23,22 @@
 
                 <div class="card-body">
                     <!-- Post preview-->
-                    <h2 class="card-title">
+                    <h4 class="card-title">
                         @blog.Name
-                    </h2>
-                    <p class="card-text text-truncate">
+                    </h4>
+                    <p class="card-text">
                         @blog.Description
                     </p>
-                    <a class="mb-2 btn btn-primary" asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@blog.Id">
+                    <a class="mb-2 btn btn-primary w-100" asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@blog.Id">
                         Read More
                     </a>
                 </div>
 
                 <div class="card-footer text-body-secondary">
                     <small class="text-body-secondary">
-                        Authored by
+                        @blog.Created.ToString("MMM dd, yyyy") |
                         <a href="#!">@blog.BlogUser.FullName</a>
-                        on @blog.Created.ToString("MMM dd, yyyy")
+                        
                     </small>
                 </div>
             </div>

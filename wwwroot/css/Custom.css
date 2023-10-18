@@ -1,4 +1,11 @@
-﻿button.btn-sm, a.btn-sm{
+﻿body {
+    font-family: "Segoe UI", SegoeUI, "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+h3{
+    font-weight:bold;
+}
+
+button.btn-sm, a.btn-sm{
     line-height: 2.5;
     border-radius: 10px;
 }
@@ -19,23 +26,35 @@ div.swal2-container.swal2-center.swal2-backdrop-show > div{
     max-height: 15vw;
     object-fit: cover;
 }
+.card-title{
+    
+    font-size:34px;
+    font-weight:100;
+}
+.card-title:hover{
 
-.search-hover {
-    border: 1px solid #ccc;
-    outline: none;
-    background-size: 22px;
-    background-position: 13px;
-    border-radius: 10px;
-    width: 300px;
-    height: 50px;
-    padding: 25px;
-    transition: all 0.5s;
+    text-decoration:underline;
+
 }
 
-   
+
 /********************IDs*****************/
 
 
 #blogContainer{
     max-width: 80rem;
+}
+#detailsTitle {
+    font-size: 40px;
+    font-weight: 90;
+}
+
+#detailsContainer{
+    background-color:white;
+  
+}
+
+#searchForm{
+    max-width:350px;
+    min-width:100px;
 }

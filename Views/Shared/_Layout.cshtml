@@ -34,7 +34,7 @@
 </head>
 <body>
     <!-- Navigation-->
-    <nav class="navbar navbar-expand-xl">
+    <nav class="navbar navbar-expand-lg">
         <div class="container-fluid px-4 px-lg-5">
 
             <a class="navbar-brand" asp-controller="Home" asp-action="Index">Murilo's Blog</a>
@@ -43,7 +43,7 @@
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 <i class="fas fa-bars"></i>
             </button>
-            <div class="collapse navbar-collapse" id="navbarResponsive">
+            <div class="collapse navbar-collapse h-100" id="navbarResponsive">
 
                 <ul class="navbar-nav ms-auto py-4 py-lg-0">
 
@@ -76,11 +76,11 @@
 
                     <li class="nav-item order-first align-self-center">
                         <form asp-action="SearchIndex" asp-controller="Posts">
-                            <div class="input-group ">
-                                <div class="form-outline  ">
-                                    <input type="text" id="searchForm" name="SearchTerm" class="form-control search-hover" placeholder="Search Murilo's Blog">
+                            <div class="input-group">
+                                <div class="form-outline">
+                                    <input type="text" id="searchForm" name="SearchTerm" class="h-100 w-100 form-control" placeholder="Search Murilo's Blog">
                                 </div>
-                                <button type="button" id="searchButton" class="btn btn-primary rounded ms-2">
+                                <button type="submit" id="searchButton" class="btn btn-sm btn-primary rounded ms-2" style="width:40px;heignt=40px;">
                                     <i class="fas fa-search"></i>
                                 </button>
                             </div>

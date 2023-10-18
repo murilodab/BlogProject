@@ -14,6 +14,7 @@ using X.PagedList;
 using Microsoft.AspNetCore.Authorization;
 using MailKit.Search;
 using System.Reflection;
+using System.Dynamic;
 
 namespace BlogProject.Controllers
 {
@@ -72,11 +73,12 @@ namespace BlogProject.Controllers
             }
 
             var pageNumber = page ?? 1;
-            var pageSize = 5;
+            var pageSize = 6;
 
             //var posts = _context.Posts.Where(p => p.BlogId == id).ToList();
             var posts = await _context.Posts
                     .Where(p => p.BlogId == id && p.ReadyStatus == ReadyStatus.ProductionReady)
+                    .Include(p=> p.BlogUser)
                     .OrderByDescending(p => p.Created)
                     .ToPagedListAsync(pageNumber, pageSize);
 
@@ -136,26 +138,32 @@ namespace BlogProject.Controllers
                 return NotFound();
             }
 
-            var post = await _context.Posts
-                .Include(p => p.Blog)
-                .Include(p => p.BlogUser)
-                .Include(p => p.Tags)
-                .Include(p => p.Comments)
-                .ThenInclude(c=> c.BlogUser)
-                .FirstOrDefaultAsync(m => m.Slug == slug);
+            dynamic BlogsPosts = new ExpandoObject();
+            BlogsPosts.Blogs = _context.Blogs
+                               .Include(p => p.Posts);
+
+
+            BlogsPosts.Posts = await _context.Posts                            
+                                .Include(p => p.Blog)
+                                .Include(p => p.BlogUser)
+                                .Include(p => p.Tags)
+                                .Include(p => p.Comments)                                 
+                                .ThenInclude(c => c.BlogUser)
+                                .FirstOrDefaultAsync(m => m.Slug == slug);
+                
 
             var postTitle = await _context.Posts.Where(p => p.Slug == slug).FirstOrDefaultAsync();
 
             Title = postTitle.Title;
 
-            if (post == null)
+            if (BlogsPosts.Posts == null)
             {
                 return NotFound();
             }
 
            
 
-            return View(post);
+            return View(BlogsPosts);
         }
 
         // GET: Posts/Create
