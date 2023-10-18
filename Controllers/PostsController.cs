@@ -139,14 +139,16 @@ namespace BlogProject.Controllers
             }
 
             dynamic BlogsPosts = new ExpandoObject();
-            BlogsPosts.Blogs = _context.Blogs
-                               .Include(p => p.Posts);
+            BlogsPosts.Tags = _context.Tags
+                               .Include(t => t.Post);
+                               
 
 
             BlogsPosts.Posts = await _context.Posts                            
                                 .Include(p => p.Blog)
                                 .Include(p => p.BlogUser)
                                 .Include(p => p.Tags)
+                                
                                 .Include(p => p.Comments)                                 
                                 .ThenInclude(c => c.BlogUser)
                                 .FirstOrDefaultAsync(m => m.Slug == slug);

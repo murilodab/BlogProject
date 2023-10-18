@@ -10,9 +10,13 @@
 @model dynamic
 
 
+@{
+    List<string> postTags = new List<string>();
+}
+
 <!-- Post Content-->
-<div class="row">
-    <div class="col-8 p-5" id="detailsContainer">
+<div class="container d-flex grid">
+    <div class="col-8 p-5 h-100" id="detailsContainer">
         <article>
             <div class="row">
                 <div class="col-lg-8 col-md-10 mx-auto" id="postBodySection">
@@ -39,9 +43,14 @@
 
             <div class="row">
                 <div class="col text-center">
+
+
                     @foreach (var tag in Model.Posts.Tags)
                     {
-                        <a class="btn btn-success btn-sm" asp-action="TagIndex" asp-controller="Posts" asp-route-tag="@tag.Text">#@tag.Text.ToUpper()</a>
+                        string pTag = tag.Text;
+                        postTags.Add(pTag);
+
+                        <a class="btn btn-success btn-sm" id="postTag" asp-action="TagIndex" asp-controller="Posts" asp-route-tag="@tag.Text.ToLower()">@tag.Text.ToLower()</a>
                     }
                 </div>
             </div>
@@ -54,7 +63,7 @@
             @if (User.Identity.IsAuthenticated)
             {
                 <form asp-action="Create" asp-controller="Comments" method="post">
-                    @Html.Hidden("PostId", (string)Model.Blogs.Id)
+                    @Html.Hidden("PostId", (int)Model.Posts.Blog.Id)
                     <div class="row">
                         <div class="form-group">
                             <label class="h2 control-label font-weight-bold">Add Comment</label>
@@ -164,7 +173,7 @@
 
                                         <div class="col-2">
                                             <form asp-action="Delete" asp-controller="Comments">
-                                                @Html.Hidden("Id", (string)comment.Id)
+                                                @Html.Hidden("Id", (int)comment.Id)
                                                 @Html.Hidden("Slug", (string)comment.Post.Slug)
                                                 <button class="btn btn-sm btn-danger font-weight-bold w-100">DELETE</button>
                                             </form>
@@ -270,34 +279,58 @@
                         }
                     </div>
         </section>
+
+
     </div>
 
+    <div class="col-4">
 
-    <div class="col-4 gx-4">
+        <h3 class="mb-4 text-center">Related Posts</h3>
 
-        @foreach (var blog in Model.Blogs)
-        {
-            <div class="col gx-4">
-                <div class="card h-100" style="min-height: 30vh">
-                    <img class="card-img-top img-fluid" id="cardImg" src="@ImageService.DecodeImage(blog.ImageData, blog.ContentType)">
-
-                    <div class="card-body text-left">
-                        <!-- Post preview-->
-                        <a class="mb-2" asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@blog.Id">
-                            <h2 class="card-title">
-                                @blog.Name
-                            </h2>
-                        </a>                     
-                    </div>
-                </div>
-            </div>
+        @{
+            List<string> postTitle = new List<string>();
         }
-    
+     
+
+            @foreach (var tag in Model.Tags)
+            {
+
+                @if (postTags.Contains(tag.Text) && tag.Post.Title != Model.Posts.Title && !postTitle.Contains(tag.Post.Title))
+                {
+                    <div class="col p-3">
+                        <div class="card h-100" style="min-height: 30vh">
+                            <img class="card-img-top img-fluid" id="cardImg" src="@ImageService.DecodeImage(tag.Post.ImageData, tag.Post.ContentType)">
+
+                            <div class="card-body text-left">
+                                <!-- Post preview-->
+                                <a class="mb-2" asp-controller="Posts" asp-action="Details" asp-route-slug="@tag.Post.Slug">
+                                    <h2 class="card-title">
+                                        @tag.Post.Title
+                                    </h2>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                postTitle.Add(tag.Post.Title);
+
+
+
+            }
+        
+
+        
+
+
     </div>
 
-   
 
 </div>
+    
+   
+
+
 
 
 @section Scripts{
