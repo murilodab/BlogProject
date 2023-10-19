@@ -15,29 +15,32 @@
 }
 
 <!-- Post Content-->
-<div class="container d-flex grid">
-    <div class="col-8 p-5 h-100" id="detailsContainer">
+<div class="row row-cols-1 row-cols-md-2 g-4 p-2">
+    <div class="col col-md-8 p-5 h-100" id="detailsContainer">
+
         <article>
             <div class="row">
-                <div class="col-lg-8 col-md-10 mx-auto" id="postBodySection">
+                <div class="col-lg-8 col-md-10 mx-auto">
                     <h2 id="detailsTitle">
                         @Model.Posts.Title
                     </h2>
                     <small><i class="text-muted">@Model.Posts.Created.ToString("MMM dd, yyyy") | @Model.Posts.BlogUser.FullName</i></small>
                 </div>
+
+
                 <div class="col-lg-8 col-md-10 mx-auto" id="postBodySection">
                     @Html.Raw(Model.Posts.Content)
                 </div>
             </div>
         </article>
-
-
         <hr />
 
         <article>
             <div class="row">
-                <div class="col text-center font-weight-bold h3">
-                    Tags
+                <div class="col text-center font-weight-bold">
+                    <h3><strong>
+                        Tags
+                    </strong></h3>
                 </div>
             </div>
 
@@ -63,7 +66,8 @@
             @if (User.Identity.IsAuthenticated)
             {
                 <form asp-action="Create" asp-controller="Comments" method="post">
-                    @Html.Hidden("PostId", (int)Model.Posts.Blog.Id)
+                    @Html.Hidden("PostId", (int)Model.Posts.Id)
+                    @Html.Hidden("Slug", (string)Model.Posts.Slug)
                     <div class="row">
                         <div class="form-group">
                             <label class="h2 control-label font-weight-bold">Add Comment</label>
@@ -87,17 +91,15 @@
             }
         </div>
 
-        <hr />
 
 
-
-        <section style="background-color:#202529;">
-            <div class="container my-5 py-3">
+        <section class="commentSection rounded">
+            <div class="container mt-2 p-4">
                 <div class="d-flex justify-content-center">
-                    <span id="commentSection" class="text-light mb-3">@Model.Posts.Comments.Count COMMENT(S)</span>
+                    <span class="text-light align-self-center">@Model.Posts.Comments.Count COMMENT(S)</span>
                 </div>
                 <div class="card rounded">
-                    <div class="card-body p-4">
+                    <div class="card-body p-3">
                         @{
                             var n = 0;
 
@@ -166,12 +168,12 @@
                                 @if (User.IsInRole(BlogRole.Moderator.ToString()) && comment.Deleted is null)
                                 {
                                     <hr />
-                                    <div class="row">
-                                        <div class="col-2">
+                                    <div class="row g-2">
+                                        <div class="col">
                                             <button data-bs-toggle="modal" data-bs-target="#moderateModal_@comment.Id" class="btn btn-sm btn-warning font-weight-bold w-100">MODERATE</button>
                                         </div>
 
-                                        <div class="col-2">
+                                        <div class="col">
                                             <form asp-action="Delete" asp-controller="Comments">
                                                 @Html.Hidden("Id", (int)comment.Id)
                                                 @Html.Hidden("Slug", (string)comment.Post.Slug)
@@ -260,13 +262,6 @@
                                             </div>
                                         </div>
                                     </div>
-
-
-
-
-
-
-
                                 </div>
 
                                 n++;
@@ -279,13 +274,11 @@
                         }
                     </div>
         </section>
-
-
     </div>
 
-    <div class="col-4">
+    <div class="col col-md-4">
 
-        <h3 class="mb-4 text-center">Related Posts</h3>
+        <h3 class="mb-4 text-center w-100">Related Posts</h3>
 
         @{
             List<string> postTitle = new List<string>();

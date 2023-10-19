@@ -87,6 +87,10 @@ namespace BlogProject.Controllers
 
             Title = blogPost.Name;
 
+            ViewData["HeaderImage"] = _imageService.DecodeImage(blogPost.ImageData, blogPost.ContentType);
+            ViewData["MainText"] = blogPost.Name;
+            ViewData["SubText"] = blogPost.Description;
+
             return View(posts);
 
         }
@@ -158,13 +162,16 @@ namespace BlogProject.Controllers
 
             Title = postTitle.Title;
 
+           
+
             if (BlogsPosts.Posts == null)
             {
                 return NotFound();
             }
 
-           
-
+            ViewData["HeaderImage"] = _imageService.DecodeImage(BlogsPosts.Posts.Blog.ImageData, BlogsPosts.Posts.Blog.ContentType);
+            ViewData["MainText"] = BlogsPosts.Posts.Blog.Name;
+            ViewData["SubText"] = BlogsPosts.Posts.Blog.Description;
             return View(BlogsPosts);
         }
 
