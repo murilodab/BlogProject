@@ -7,73 +7,9 @@
 
 @model IPagedList<BlogProject.Models.Blog>
 
-<header>
-    <div class="row homeHeader">
-        <div class="carousel slide" id="carouselSlide" data-bs-ride="true">
-            <div class="carousel-inner">
-
-                @{
-                    var count = 0;
-                }
-
-
-                @foreach (var blog in Model)
-                {
-                    if (count == 0)
-                    {
-                        <div class="carousel-item active">
-
-                            <img class="img-fluid w-100 homeHeader" src="@ImageService.DecodeImage(blog.ImageData, blog.ContentType)">
-                            <div class="carousel-caption">
-                                <a asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@blog.Id">
-                                    <h1>
-                                        @blog.Name
-                                    </h1>
-                                    <p class="card-text">
-                                        @blog.Description
-                                    </p>
-                                </a>
-                            </div>
-                        </div>
-                    }
-                    else if (count != 3)
-                    {
-                        <div class="carousel-item">
-
-                            <img class="img-fluid w-100 homeHeader" src="@ImageService.DecodeImage(blog.ImageData, blog.ContentType)">
-                            <div class="carousel-caption d-none d-md-block">
-                                <a asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@blog.Id">
-                                    <h1 class="text-left">
-                                        @blog.Name
-                                    </h1>
-                                    <p class="card-text">
-                                        @blog.Description
-                                    </p>
-                                </a>
-                            </div>
-                        </div>
-                    }
-                    count++;
-                }
-
-
-
-
-            </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselSlide" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselSlide" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
-        </div>
-    </div>
-    </header>
-   
-
-
+@{
+    Layout = "~/Views/Shared/_LayoutHome.cshtml";
+}
 
 <div class="container-lg">
     @if (Model.PageNumber <= 1)

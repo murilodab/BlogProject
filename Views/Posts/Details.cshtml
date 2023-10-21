@@ -89,7 +89,7 @@
                 }
                 else
                 {
-                    <a class="btn w-100 btn-sm btn-dark" asp-area="Identity" asp-page="/Account/Login">
+                    <a class="btn w-100 btn-sm btn-outline-primary" asp-area="Identity" asp-page="/Account/Login">
                         Login to add comments
                     </a>
                 }
@@ -97,10 +97,10 @@
 
 
 
-            <section class="commentSection rounded">
+            <section class="bg-primary rounded">
                 <div class="container mt-2 p-2">
                     <div class="d-flex justify-content-center">
-                        <span class="text-light align-self-center">@Model.Posts.Comments.Count COMMENT(S)</span>
+                        <span class="text-light pb-2">@Model.Posts.Comments.Count COMMENT(S)</span>
                     </div>
                     <div class="card rounded">
                         <div class="card-body p-2">
@@ -251,7 +251,7 @@
                                                             <select class="form-control" for="@comment.ModerationType" name="ModerationType" asp-items="Html.GetEnumSelectList<ModerationType>()"></select>
                                                         </div>
 
-                                                        <div class="form-group">
+                                                        <div class="form-group mt-2">
                                                             <div class="row">
                                                                 <div class="col">
                                                                     <button class="btn btn-sm w-100 btn-dark borderalert-success fonr-weight-bold" type="submit">SUBMIT</button>
@@ -279,6 +279,8 @@
                         </div>
             </section>
         </div>
+       
+        @* RELATED POSTS TO THE SIDE *@
 
         <div class="col col-md-4">
 
@@ -300,7 +302,7 @@
 
                             <div class="card-body text-left">
                                 <!-- Post preview-->
-                                <a class="mb-2" asp-controller="Posts" asp-action="Details" asp-route-slug="@tag.Post.Slug">
+                                <a style="text-decoration:none;" class="mb-2" asp-controller="Posts" asp-action="Details" asp-route-slug="@tag.Post.Slug">
                                     <h2 class="card-title">
                                         @tag.Post.Title
                                     </h2>

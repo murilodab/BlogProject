@@ -1,16 +1,16 @@
 ﻿body {
-    font-family: "Segoe UI", SegoeUI, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: "Segoe UI", SegoeUI, "Helvetica Neue", Helvetica, Arial, sans-serif; 
 }
 
 
 h3{
-
     font-weight:90;
 }
 
-.nav-link{
-    color:white;
-}
+
+
+
+
 
 button.btn-sm, a.btn-sm{
     line-height: 2.5;
@@ -28,25 +28,76 @@ div.swal2-container.swal2-center.swal2-backdrop-show > div{
    
 }
 
+/********** classes **********/
 
-.homeHeader {
+
+.nav-link {
+    color: white;
+}
+
+.layoutHeader {
+    background: black;
+    width: 100%;
     height: 500px;
+    padding:0;
+    margin:0;
+    position:relative;
+}
+
+.headerImg {
+    width: 100%;
+    height:100%;
     object-fit: cover;
-    background: no-repeat center center;
+    opacity: 0.4;
+    position:absolute;  
+}
+
+
+
+.carousel-item{
+    width:100%;
+    height:500px;
+
+}
+
+.carouselImg{
+  
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    opacity: 0.4;
+
+    }
+
+.carousel {
+    background: black;
+    height: 500px;
+    overflow: hidden;
+}
+
+.carousel-caption {
+    position: absolute;
+    top: 100px;
     
 }
 
-.carousel-caption{
-
-    position:absolute;
-    top:200px;
+.slideTitle {
+    font-family: "Segoe UI", SegoeUI, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: 500;
+    font-size: 60px;
+    color: white;
+    
   
 }
 
-
-.commentSection{
-    background-color:darkgrey;
+.slideText {
+    font-family: "Segoe UI", SegoeUI, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: 90;
+    font-size: 30px;
+    color: white;
 }
+
+
 
 .card-img-top {
     max-width: 100%;
@@ -56,7 +107,9 @@ div.swal2-container.swal2-center.swal2-backdrop-show > div{
 .card-title{
     
     font-size:34px;
-    font-weight:100;
+    font-weight:500;
+    color:black;
+    
 }
 a>.card-title:hover{
 
@@ -79,4 +132,9 @@ a>.card-title:hover{
     background-color:white;
     margin-top:0;
   
+}
+
+a:-webkit-any-link {
+    
+    cursor: pointer;
 }

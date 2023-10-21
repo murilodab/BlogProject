@@ -2,13 +2,15 @@
 @model BlogProject.Models.Post
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Create Post";
 }
+@{
+    Layout = "~/Views/Shared/_LayoutSearchTag.cshtml";
+}
+<div class="container-lg  p-5">
+    <h1 class="mt-3">@ViewData["Title"]</h1>
 
-<h1>Create</h1>
-
-<h4>Post</h4>
-<hr />
+    <div class="row p-5 bg-secondary-subtle rounded">
 <div class="row">
     <div class="col-md-12">
         <form asp-action="Create" enctype="multipart/form-data">
@@ -95,6 +97,7 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
+</div>
 @section Scripts{
 
     <script>

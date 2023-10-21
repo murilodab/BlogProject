@@ -1,20 +1,24 @@
 ﻿@{
     if (ViewData.TryGetValue("ParentLayout", out var parentLayout) && parentLayout !=  null)
     {
-        Layout = parentLayout.ToString();
-    }
+       
+    Layout = "~/Views/Shared/_LayoutSearchTag.cshtml";
+}
+    
     else
     {
         Layout = "/Areas/Identity/Pages/_Layout.cshtml";
     }
 }
 
+<div class="container-lg p-5">
+   
 <h1>Manage your account</h1>
 
 <div>
     <h2>Change your account settings</h2>
     <hr />
-    <div class="row">
+        <div class="row bg-success p-5 rounded">
         <div class="col-md-3">
             <partial name="_ManageNav" />
         </div>
@@ -24,6 +28,7 @@
     </div>
 </div>
 
+</div>
 @section Scripts {
     @RenderSection("Scripts", required: false)
 }

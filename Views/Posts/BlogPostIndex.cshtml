@@ -28,7 +28,7 @@
                         <div class="card-text">
                             <small class="text-muted">@post.Created.ToString("MMM dd, yyyy") | <a>@post.BlogUser.FullName</a></small>
                             <div class=" mt-3 mb-3">
-                                <a asp-controller="Posts" asp-action="Details" asp-route-slug="@post.Slug">
+                                <a style="text-decoration: none;" asp-controller="Posts" asp-action="Details" asp-route-slug="@post.Slug">
                                     <h2 class=" mt-1 card-title">
                                         @post.Title
                                     </h2>

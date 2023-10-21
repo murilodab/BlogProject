@@ -1,5 +1,4 @@
-﻿
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -28,7 +27,7 @@
 </head>
 
 <body>
-
+    <header>
     <!-- Navigation-->
     <nav class="navbar navbar-expand-lg sticky-top bg-dark">
         <div class="container-fluid">
@@ -70,12 +69,12 @@
 
                 <form class="d-flex ps-3" role="search" asp-action="SearchIndex" asp-controller="Posts">
                     <div class="input-group">
-                    <input type="text" class="form-control me-2" name="SearchTerm" placeholder="Search Murilo's Blog" aria-label="Search">
-                    <div class="input-group-append">
-                    <button type="submit" class="btn btn-outline-success">
-                        <i class="fas fa-search"></i>
-                    </button>
-                    </div>
+                        <input type="text" class="form-control me-2" name="SearchTerm" placeholder="Search Murilo's Blog" aria-label="Search">
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-outline-success">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
                     </div>
                 </form>
 
@@ -83,22 +82,7 @@
         </div>
     </nav>
 
-
-    <!-- Page Header-->
-    
-        <header>
-            <div class="container-fluid layoutHeader">
-                <img class="img-fluid headerImg" src="@ViewData["HeaderImage"]">
-                <div class="carousel-caption">
-                    <h1 class="slideTitle">@ViewData["MainText"]</h1>
-                    <p class="slideText">@ViewData["SubText"]</p>
-                </div>
-            </div>
-        </header>
-    
-
-    
-
+    </header>
 
     <!-- Main Content-->
 

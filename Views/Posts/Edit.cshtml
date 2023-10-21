@@ -2,12 +2,15 @@
 @model BlogProject.Models.Post
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit Post";
 }
 
-<h1>Edit</h1>
+@{
+    Layout = "~/Views/Shared/_LayoutSearchTag.cshtml";
+}
+<div class="container-lg  p-5">
+    <h1 class="mt-3">@ViewData["Title"]</h1>
 
-<h4>Post</h4>
 <hr />
 <div class="row">
     <div class="col-md-12">
@@ -89,7 +92,7 @@
 
 
 
-            <div class="form-group">
+            <div class="form-group mt-2 mb-3">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
@@ -99,7 +102,7 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
-
+</div>
 @section Scripts {
 
 

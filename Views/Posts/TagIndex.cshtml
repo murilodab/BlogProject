@@ -9,11 +9,15 @@
 
 @model IPagedList<Post>
 
+@{
+    Layout = "~/Views/Shared/_LayoutSearchTag.cshtml";
+}
+
 <div class="container-lg">
 
 @if (Model.PageNumber <= 1)
 {
-    <h3 class="mt-3">Posts tagged with "@ViewData["SearchTerm"]"</h3>
+    <h3 class="mt-5">Posts tagged with "@ViewData["SearchTerm"]"</h3>
 
     <hr />
 }
