@@ -41,6 +41,7 @@ namespace BlogProject.Controllers
         public async Task<IActionResult> SearchIndex(int? page, string searchTerm)
         {
             ViewData["SearchTerm"] = searchTerm;
+            ViewData["Title"] = searchTerm;
 
             var pageNumber = page ?? 1;
             var pageSize = 5;

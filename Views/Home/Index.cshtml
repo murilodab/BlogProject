@@ -7,80 +7,151 @@
 
 @model IPagedList<BlogProject.Models.Blog>
 
-@if (Model.PageNumber <= 1)
-{
-    <h3>Most Recent</h3>
+<header>
+    <div class="row homeHeader">
+        <div class="carousel slide" id="carouselSlide" data-bs-ride="true">
+            <div class="carousel-inner">
 
-    <hr />
-}
-<div id="blogContainer" class="row row-cols-1 row-cols-md-3 g-4">
+                @{
+                    var count = 0;
+                }
 
-    @foreach (var blog in Model)
+
+                @foreach (var blog in Model)
+                {
+                    if (count == 0)
+                    {
+                        <div class="carousel-item active">
+
+                            <img class="img-fluid w-100 homeHeader" src="@ImageService.DecodeImage(blog.ImageData, blog.ContentType)">
+                            <div class="carousel-caption">
+                                <a asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@blog.Id">
+                                    <h1>
+                                        @blog.Name
+                                    </h1>
+                                    <p class="card-text">
+                                        @blog.Description
+                                    </p>
+                                </a>
+                            </div>
+                        </div>
+                    }
+                    else if (count != 3)
+                    {
+                        <div class="carousel-item">
+
+                            <img class="img-fluid w-100 homeHeader" src="@ImageService.DecodeImage(blog.ImageData, blog.ContentType)">
+                            <div class="carousel-caption d-none d-md-block">
+                                <a asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@blog.Id">
+                                    <h1 class="text-left">
+                                        @blog.Name
+                                    </h1>
+                                    <p class="card-text">
+                                        @blog.Description
+                                    </p>
+                                </a>
+                            </div>
+                        </div>
+                    }
+                    count++;
+                }
+
+
+
+
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselSlide" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselSlide" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+    </header>
+   
+
+
+
+<div class="container-lg">
+    @if (Model.PageNumber <= 1)
     {
-        <div class="col">
-            <div class="card h-100" style="min-height: 30vh">
-                <img class="card-img-top img-fluid" id="cardImg" src="@ImageService.DecodeImage(blog.ImageData, blog.ContentType)">
+        <h3 class="mt-4">Most Recent Blogs</h3>
 
-                <div class="card-body">
-                    <!-- Post preview-->
-                    <h4 class="card-title">
-                        @blog.Name
-                    </h4>
-                    <p class="card-text">
-                        @blog.Description
-                    </p>
-                    <a class="mb-2 btn btn-primary w-100" asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@blog.Id">
-                        Read More
-                    </a>
-                </div>
+        <hr />
+    }
+    <div id="blogContainer" class="row row-cols-1 row-cols-md-3 g-4 h-100">
 
-                <div class="card-footer text-body-secondary">
-                    <small class="text-body-secondary">
-                        @blog.Created.ToString("MMM dd, yyyy") |
-                        <a href="#!">@blog.BlogUser.FullName</a>
-                        
-                    </small>
+        @foreach (var blog in Model)
+        {
+            <div class="col">
+                <div class="card h-100" style="min-height: 30vh">
+                    <img class="card-img-top img-fluid" id="cardImg" src="@ImageService.DecodeImage(blog.ImageData, blog.ContentType)">
+
+                    <div class="card-body">
+                        <!-- Post preview-->
+                        <h4 class="card-title">
+                            @blog.Name
+                        </h4>
+                        <p class="card-text">
+                            @blog.Description
+                        </p>
+                        <a class="mb-2 btn btn-primary w-100" asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@blog.Id">
+                            Read More
+                        </a>
+                    </div>
+
+                    <div class="card-footer text-body-secondary">
+                        <small class="text-body-secondary">
+                            @blog.Created.ToString("MMM dd, yyyy") |
+                            <a href="#!">@blog.BlogUser.FullName</a>
+
+                        </small>
+                    </div>
                 </div>
             </div>
+        }
+    </div>
+
+
+
+
+    <!-- Pager-->
+    @if (Model.PageCount > 1 && Model.PageNumber <= 1)
+    {
+        <div class="row">
+
+            <div class="col d-flex justify-content-end mb-2 mt-2">
+                <a class="btn btn-md btn-primary text-uppercase" href="/?page=2">View More</a>
+
+            </div>
         </div>
+    }
+
+    <!-- Add Pagin Controls Here-->
+    @if (Model.PageNumber > 1)
+    {
+        <div class="row">
+            <div class="d-flex col h4 justify-content-center mt-3">
+                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="d-flex justify-content-center col">
+                @Html.PagedListPager(Model, page => Url.Action("Index", new { page = page}),
+            new PagedListRenderOptions
+            {
+            LiElementClasses = new string[]{"page-item"},
+            PageClasses = new string[] {"page-link"}
+            })
+            </div>
+        </div>
+
     }
 </div>
 
 
 
-
-<!-- Pager-->
-
-@if(Model.PageCount > 1 && Model.PageNumber <=1)
-{
-<div class="row">
-
-    <div class="col d-flex justify-content-end mb-2 mt-2">
-        <a class="btn btn-md btn-primary text-uppercase" href="/?page=2">View More</a>
-
-    </div>
-</div>
-}
-
-<!-- Add Pagin Controls Here-->
-
-@if(Model.PageNumber > 1)
-{
-<div class="row">
-    <div class="d-flex col h4 justify-content-center mt-3">
-        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-    </div>
-</div>
-
-<div class="row">
-    <div class="d-flex justify-content-center col">
-        @Html.PagedListPager(Model, page => Url.Action("Index", new { page = page}),
-        new PagedListRenderOptions
-        {
-        LiElementClasses = new string[]{"page-item"},
-        PageClasses = new string[] {"page-link"}
-        })
-    </div>
-</div>
-
-}

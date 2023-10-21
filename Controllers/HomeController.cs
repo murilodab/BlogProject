@@ -39,6 +39,8 @@ namespace BlogProject.Controllers
                 .OrderByDescending(b => b.Created)
                 .ToPagedListAsync(pageNumber, pageSize);
 
+            
+
             return View(await blogs);
         }
 

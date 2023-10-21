@@ -1,8 +1,8 @@
-﻿<!DOCTYPE html>
+﻿<!doctype html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="" />
     <meta name="author" content="" />
     <title>@ViewData["Title"] - BlogProject</title>
@@ -12,59 +12,45 @@
     <!-- Google fonts-->
     <link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
     <link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css" />
-
-
-    <!-- Core theme CSS (includes Bootstrap)-->
-    <link href="~/css/styles.css" rel="stylesheet" />
-
-
+    
+    <!-- Bootstrap 5.3.2-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <!-- Custom CSS-->
     <link href="~/css/Custom.css" rel="stylesheet" />
-
     <!-- Sweet alert-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css">
-
-
     <!-- JQuery -->
     <script type="text/javascript" src="//code.jquery.com/jquery-3.6.0.min.js"></script>
-
     <!-- include summernote css/js -->
     <link href="~/css/summernote-lite.css" rel="stylesheet" />
     <script src="~/js/summernote-lite.js"></script>
 </head>
+
 <body>
     
-    <!-- Navigation-->
-    
-    <nav class="navbar fixed-top navbar-expand-md">
-        <div class="container-fluid px-4 px-lg-5">
-
-            <a asp-controller="Home" asp-action="Index"><img src="/assets/img/blog-logo.svg" width="200"/></a>
-
-
-            <button class="navbar-toggler rounded" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                <i class="fas fa-bars"></i>
+    <!-- Navigation--> 
+    <nav class="navbar navbar-expand-lg sticky-top bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" asp-controller="Home" asp-action="Index"><img src="/assets/img/blog-logo.svg" width="200"/></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fa-solid fa-lg fa-bars" style="color: #ffffff;"></i>
             </button>
-            <div class="collapse navbar-collapse h-100" id="navbarResponsive">
-
-                <hr />
-
-                <ul class="navbar-nav ms-auto py-lg-0">
-                    <hr />
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link px-lg-3 py-3 py-lg-4" asp-controller="Home" asp-action="Index">Home</a>
+                        <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link px-lg-3 py-3 py-lg-4" asp-controller="Home" asp-action="About">About</a>
+                        <a class="nav-link" target="_blank" href="https://murilobarbosa.dev/">About</a>
                     </li>
-                    <li class="nav-item">
+                    @* <li class="nav-item">
                         <a class="nav-link px-lg-3 py-3 py-lg-4" asp-controller="Home" asp-action="Contact">Contact</a>
-                    </li>
+                    </li> *@
 
                     @if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
                     {
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle px-lg-3 py-3 py-lg-4" role="button" data-bs-toggle="dropdown" arie-expanded="false">
+                            <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Manage Blog
                             </a>
 
@@ -78,77 +64,69 @@
                         </li>
                     }
 
-                    <li class="nav-item align-self-center order-first">
-                        <form asp-action="SearchIndex" asp-controller="Posts">
-                            <div class="input-group">
-                                <div class="form-outline">
-                                    <input type="text" id="searchForm" name="SearchTerm" class="h-100 w-100 form-control rounded" placeholder="Search Murilo's Blog">
-                                </div>
-                                <button type="submit" id="searchButton" class="btn btn-sm btn-primary rounded ms-2">
-                                    <i class="fas fa-search"></i>
-                                </button>
-                            </div>
-                        </form>
-                    </li>
-
-
-                    <hr />
-                </ul>
-                <div>
-                   
+                    </ul>               
                     <partial class="nav-link px-lg-3 py-3 py-lg-4" name="_LoginPartial" />
-                </div>
+                
+                        <form class="d-flex" role="search" asp-action="SearchIndex" asp-controller="Posts">
+                                    <input type="search" class="form-control me-2" placeholder="Search Murilo's Blog" aria-label="Search">                 
+                                <button type="submit" class="btn btn-outline-success">
+                                    <i class="fas fa-search"></i>
+                                </button>       
+                        </form>
+                
             </div>
         </div>
     </nav>
 
+
     <!-- Page Header-->
-    <header class="masthead" style="background-image: url(@ViewData["HeaderImage"]);">
-        <div class="container position-relative px-4 px-lg-5">
-            <div class="row gx-4 gx-lg-5 justify-content-center">
-                <div class="col-md-10 col-lg-8 col-xl-7">
-                    <div class="site-heading">
-                        <h1>@ViewData["MainText"]</h1>
-                        <span class="subheading">@ViewData["SubText"]</span>
+
+    @if (!ViewData["Title"].Equals("Home Page") && !ViewData["Title"].Equals(ViewData["SearchTerm"]))
+    {     
+        <header class="masthead" style="background-image: url(@ViewData["HeaderImage"]);">
+            <div class="container position-relative px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <div class="site-heading">
+                            <h1>@ViewData["MainText"]</h1>
+                            <span class="subheading">@ViewData["SubText"]</span>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </header>
-    
+        </header>
+    } 
 
     <!-- Main Content-->
-    <div class="container-lg">
-        <main class="content">
+
+    <main class="content">
             @RenderBody()
         </main>
-    </div>
-
 
     <!-- Footer-->
-    <footer class="border-top">
+    <footer class="border-top mt-3 navbar-fixed-bottom">
         <div class="container px-4 px-lg-5">
             <div class="row gx-4 gx-lg-5 justify-content-center">
                 <div class="col-md-10 col-lg-8 col-xl-7">
                     <ul class="list-inline text-center">
                         <li class="list-inline-item">
-                            <a href="#!">
+                            <a href="https://wa.link/n4qvd3" target="_blank">
                                 <span class="fa-stack fa-lg">
                                     <i class="fas fa-circle fa-stack-2x"></i>
-                                    <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+                                    <i class="fab fa-whatsapp fa-stack-1x fa-lg fa-inverse"></i>
                                 </span>
                             </a>
                         </li>
                         <li class="list-inline-item">
-                            <a href="#!">
+                            <a target="_blank" href="https://www.linkedin.com/in/murilo-barbosa-55ab1492/?locale=en_US">
                                 <span class="fa-stack fa-lg">
                                     <i class="fas fa-circle fa-stack-2x"></i>
-                                    <i class="fab fa-facebook-f fa-stack-1x fa-inverse"></i>
+                                    <i class="fab fa-linkedin-in fa-stack-1x fa-inverse"></i>
                                 </span>
                             </a>
                         </li>
                         <li class="list-inline-item">
-                            <a href="#!">
+                            <a target="_blank" href="https://github.com/murilodab/BlogProject">
                                 <span class="fa-stack fa-lg">
                                     <i class="fas fa-circle fa-stack-2x"></i>
                                     <i class="fab fa-github fa-stack-1x fa-inverse"></i>
@@ -156,27 +134,21 @@
                             </a>
                         </li>
                     </ul>
-                    <div class="small text-center text-muted fst-italic">Copyright &copy; Your Website 2023</div>
+                    <div class="small text-center text-muted fst-italic">Copyright &copy; Murilo Barbosa 2023</div>
                 </div>
             </div>
         </div>
     </footer>
-
-
-
-    <!-- Bootstrap core JS-->
-    <script src="//cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Core theme JS-->
-    <script src="/js/scripts.js"></script>
+    
     <!-- Sweet Alert 2-->
-
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
 
     <!-- Custom JS-->
 
     <script>let tagValues = '@ViewData["TagValues"]';</script>
     <script src="~/js/Custom.js"></script>
-
+    <!-- Bootstrap core JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

@@ -1,11 +1,14 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Security.Policy;
 
 namespace BlogProject.Models
 {
+
     public class Blog
     {
+        
         public int Id { get; set; }
         public string? BlogUserId { get; set; }
 

@@ -1,23 +1,16 @@
-﻿
-
-body{
+﻿body {
     font-family: "Segoe UI", SegoeUI, "Helvetica Neue", Helvetica, Arial, sans-serif;
-    
 }
 
-nav {
-    box-shadow: 0 2px 4px 0 rgba(0,0,0,.2);
-}
-
-header.masthead {
-    margin-bottom: 0 !important;
-}
 
 h3{
 
     font-weight:90;
 }
 
+.nav-link{
+    color:white;
+}
 
 button.btn-sm, a.btn-sm{
     line-height: 2.5;
@@ -36,6 +29,20 @@ div.swal2-container.swal2-center.swal2-backdrop-show > div{
 }
 
 
+.homeHeader {
+    height: 500px;
+    object-fit: cover;
+    background: no-repeat center center;
+    
+}
+
+.carousel-caption{
+
+    position:absolute;
+    top:200px;
+  
+}
+
 
 .commentSection{
     background-color:darkgrey;
@@ -51,42 +58,10 @@ div.swal2-container.swal2-center.swal2-backdrop-show > div{
     font-size:34px;
     font-weight:100;
 }
-.card-title:hover{
+a>.card-title:hover{
 
     text-decoration:underline;
 
-}
-
-
-
-.navbar {
-    background-color: #292929;
-    
-}
-
-.navbar-brand{
-    font-weight:bold;
-}
-.navbar-toggler, .collapsed{
-    color:white;
-    border-color:transparent;
-}
-
-.nav-link{
-    color:white;
-}
-
-.nav-link:hover {
-    text-decoration:underline;
-}
-
-.dropdown-menu.show{
-    background-color: #292929;
-    border-color:transparent;
-}
-
-.dropdown-item{
-    color:white;
 }
 
 /********************IDs*****************/
@@ -104,9 +79,4 @@ div.swal2-container.swal2-center.swal2-backdrop-show > div{
     background-color:white;
     margin-top:0;
   
-}
-
-#searchForm{
-    max-width:350px;
-    min-width:100px;
 }
