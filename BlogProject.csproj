@@ -8,6 +8,7 @@
 	<BaseOutputPath>bin</BaseOutputPath>
 	<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
 	<InvariantGlobalization>true</InvariantGlobalization>
+	<DockerfileContext>.</DockerfileContext>
 	  
   </PropertyGroup>
 
@@ -33,6 +34,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.4" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.10" />
     <PackageReference Include="MimeKit" Version="4.2.0" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.11" />
