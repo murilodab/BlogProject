@@ -1,4 +1,5 @@
 using BlogProject.Data;
+using BlogProject.Helpers;
 using BlogProject.Models;
 using BlogProject.Services;
 using BlogProject.ViewModels;
@@ -55,6 +56,10 @@ builder.Services.AddScoped<ISlugService, BasicSlugService>();
 builder.Services.AddScoped<BlogSearchService>();
 
 var app = builder.Build();
+
+var scope = app.Services.CreateScope();
+
+await DataHelper.ManageDataAsync(scope.ServiceProvider);
 
 //Using the Custom DataService
 using (var serviceScope = app.Services.CreateScope())
