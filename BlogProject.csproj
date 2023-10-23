@@ -5,7 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>aspnet-BlogProject-66d4bc03-df6a-42e4-adbe-851633b9b6bb</UserSecretsId>
-	  <InvariabantGlobalization>true</InvariabantGlobalization>
+	  <InvariantGlobalization>true</InvariantGlobalization>
   </PropertyGroup>
 
   <ItemGroup>
