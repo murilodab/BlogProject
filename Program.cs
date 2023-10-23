@@ -66,11 +66,12 @@ using (var serviceScope = app.Services.CreateScope())
     var services = serviceScope.ServiceProvider;
     var dataService = services.GetRequiredService<DataService>();
     await dataService.ManageDataAsync();
-
-    await DataHelper.ManageDataAsync(serviceScope.ServiceProvider);
 }
 
+var scope = app.Services.CreateScope();
 
+//Keep database updated with the latest migrations
+await DataHelper.ManageDataAsync(scope.ServiceProvider);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
