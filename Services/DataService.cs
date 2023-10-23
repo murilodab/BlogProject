@@ -23,10 +23,15 @@ namespace BlogProject.Services
         }
 
 
-        public async Task ManageDataAsync() //Wrapper
+        public async Task ManageDataAsync(IServiceProvider svcProvider) //Wrapper
         {
+            var dbContextSvc = svcProvider.GetRequiredService<ApplicationDbContext>();
+
+
+            //Migration: This is the programmatic equivalent to Update-Database
+            await dbContextSvc.Database.MigrateAsync();
             //Create the DB from the Migrations
-            await _dbContext.Database.MigrateAsync();
+            
             //Seed a few Roles into the system
             await SeedRolesAsync();
 

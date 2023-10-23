@@ -61,17 +61,12 @@ var app = builder.Build();
 
 
 //Using the Custom DataService
-//using (var serviceScope = app.Services.CreateScope())
-//{
-//    var services = serviceScope.ServiceProvider;
-//    var dataService = services.GetRequiredService<DataService>();
-//    await dataService.ManageDataAsync(services);
-//}
-
-var scope = app.Services.CreateScope();
-
-//Keep database updated with the latest migrations
-await DataHelper.ManageDataAsync(scope.ServiceProvider);
+using (var serviceScope = app.Services.CreateScope())
+{
+  var services = serviceScope.ServiceProvider;
+   var dataService = services.GetRequiredService<DataService>();
+   await dataService.ManageDataAsync(serviceScope.ServiceProvider);
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
