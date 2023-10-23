@@ -61,12 +61,12 @@ var app = builder.Build();
 
 
 //Using the Custom DataService
-using (var serviceScope = app.Services.CreateScope())
-{
-    var services = serviceScope.ServiceProvider;
-    var dataService = services.GetRequiredService<DataService>();
-    await dataService.ManageDataAsync();
-}
+//using (var serviceScope = app.Services.CreateScope())
+//{
+//    var services = serviceScope.ServiceProvider;
+//    var dataService = services.GetRequiredService<DataService>();
+//    await dataService.ManageDataAsync(services);
+//}
 
 var scope = app.Services.CreateScope();
 
