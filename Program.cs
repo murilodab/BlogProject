@@ -6,6 +6,7 @@ using BlogProject.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Build.Execution;
 using Microsoft.EntityFrameworkCore;
+using static System.Formats.Asn1.AsnWriter;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -57,17 +58,16 @@ builder.Services.AddScoped<BlogSearchService>();
 
 var app = builder.Build();
 
-var scope = app.Services.CreateScope();
 
-await DataHelper.ManageDataAsync(scope.ServiceProvider);
 
 //Using the Custom DataService
 using (var serviceScope = app.Services.CreateScope())
 {
     var services = serviceScope.ServiceProvider;
     var dataService = services.GetRequiredService<DataService>();
-
     await dataService.ManageDataAsync();
+
+    await DataHelper.ManageDataAsync(serviceScope.ServiceProvider);
 }
 
 
