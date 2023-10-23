@@ -19,7 +19,5 @@ namespace BlogProject.Data
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Tag> Tags { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-            => optionsBuilder.UseNpgsql("Host=localhost;Database=BlogProject;Username=postgres;Password=@Postgres5023");
-    }
+            }
 }
