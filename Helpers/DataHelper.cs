@@ -10,6 +10,7 @@ namespace BlogProject.Helpers
         {
             //Service: An instance of db context
             var dbContextSvc = svcProvider.GetRequiredService<ApplicationDbContext>();
+    
 
             //Migration: This is the programmatic equivalent to Update-Database
             await dbContextSvc.Database.MigrateAsync();
