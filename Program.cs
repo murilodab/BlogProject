@@ -10,6 +10,18 @@ using static System.Formats.Asn1.AsnWriter;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("PortfolioPolicy",
+        policy =>
+        {
+            policy.WithOrigins("https://murilobarbosa.dev/",
+                                "https://localhost:7272");
+        });
+
+  
+});
+
 // Add services to the container.
 var connectionString = ConnectionHelper.GetConnectionString(builder.Configuration) ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
@@ -86,6 +98,8 @@ app.UseDefaultFiles();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseCors();
 
 app.UseAuthorization();
 

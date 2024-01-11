@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BlogProject.Data;
 using BlogProject.Models;
+using Microsoft.AspNetCore.Cors;
 
 namespace BlogProject.Controllers
 {
@@ -33,7 +34,7 @@ namespace BlogProject.Controllers
         }
 
         // GET: api/ApiPosts
-
+        [EnableCors("PortfolioPolicy")]
         [HttpGet("/recentposts")]
         public async Task<ActionResult<IEnumerable<Post>>> GetRecentPosts()
         {
