@@ -16,11 +16,12 @@ builder.Services.AddCors(options =>
         policy =>
         {
             policy.WithOrigins("https://murilobarbosa.dev/",
-                                
-                                "http://127.0.0.1:5500");
+                                "http://127.0.0.1:5500")
+                                .AllowAnyHeader()
+                                .AllowAnyMethod(); ;
         });
 
-  
+
 });
 
 // Add services to the container.
@@ -76,9 +77,9 @@ var app = builder.Build();
 //Using the Custom DataService
 using (var serviceScope = app.Services.CreateScope())
 {
-  var services = serviceScope.ServiceProvider;
-   var dataService = services.GetRequiredService<DataService>();
-   await dataService.ManageDataAsync(serviceScope.ServiceProvider);
+    var services = serviceScope.ServiceProvider;
+    var dataService = services.GetRequiredService<DataService>();
+    await dataService.ManageDataAsync(serviceScope.ServiceProvider);
 }
 
 // Configure the HTTP request pipeline.
@@ -105,8 +106,8 @@ app.UseCors();
 app.UseAuthorization();
 
 app.MapControllerRoute(
-    name:"SlugRoute",
-    pattern:"BlogPosts/UrlFriendly/{slug}",
+    name: "SlugRoute",
+    pattern: "BlogPosts/UrlFriendly/{slug}",
     defaults: new { controller = "Posts", action = "Details" });
 
 app.MapControllerRoute(
