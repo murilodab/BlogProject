@@ -16,7 +16,8 @@ builder.Services.AddCors(options =>
         policy =>
         {
             policy.WithOrigins("https://murilobarbosa.dev/",
-                                "http://127.0.0.1:5500")
+                                "http://127.0.0.1:5500",
+                                "https://localhost:7272")
                                 .AllowAnyHeader()
                                 .AllowAnyMethod(); ;
         });
