@@ -17,7 +17,7 @@ builder.Services.AddCors(options =>
         {
             policy.WithOrigins("https://murilobarbosa.dev/",
                                 
-                                "http://127.0.0.1:5500/index.html");
+                                "http://127.0.0.1:5500");
         });
 
   
