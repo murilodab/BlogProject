@@ -43,7 +43,7 @@ namespace BlogProject.Controllers
             {
                 return NotFound();
             }
-            return await _context.Posts.OrderBy(p => p.Created).Take(3).Where(p => p.ReadyStatus.Value.Equals(nameof(ReadyStatus.ProductionReady))).ToListAsync();
+            return await _context.Posts.OrderBy(p => p.Created).Take(3).ToListAsync();
         }
 
 
