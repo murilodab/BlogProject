@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using BlogProject.Data;
 using BlogProject.Models;
 using Microsoft.AspNetCore.Cors;
+using BlogProject.Enums;
 
 namespace BlogProject.Controllers
 {
@@ -42,7 +43,7 @@ namespace BlogProject.Controllers
             {
                 return NotFound();
             }
-            return await _context.Posts.OrderBy(p => p.Created).Take(3).ToListAsync();
+            return await _context.Posts.OrderBy(p => p.Created).Take(3).Where(p => p.ReadyStatus.Equals(nameof(ReadyStatus.ProductionReady))).ToListAsync();
         }
 
 

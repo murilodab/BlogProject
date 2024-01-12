@@ -19,7 +19,7 @@ builder.Services.AddCors(options =>
                                 "http://127.0.0.1:5500",
                                 "https://localhost:7272")
                                 .AllowAnyHeader()
-                                .AllowAnyMethod(); ;
+                                .AllowAnyMethod();
         });
 
 
